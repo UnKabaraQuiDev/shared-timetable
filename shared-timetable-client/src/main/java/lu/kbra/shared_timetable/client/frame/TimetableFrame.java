@@ -1,30 +1,28 @@
 package lu.kbra.shared_timetable.client.frame;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.swing.DefaultListModel;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import lu.kbra.shared_timetable.client.data.TimetableEvent;
-import lu.kbra.shared_timetable.client.frame.renderers.TimetableEventListCellRenderer;
+import lu.kbra.shared_timetable.client.utils.JLabelBuilder;
 
 public class TimetableFrame extends JFrame {
 
 	private JLabel timeLabel, dateLabel;
-	private JList<TimetableEvent> eventList;
+	private JPanel currentEventList, upcomingEventList;
 	private List<TimetableEvent> events;
 	private Timer timer;
 
@@ -34,25 +32,35 @@ public class TimetableFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 
-		JPanel timeDatePanel = new JPanel(new BorderLayout());
+		final JPanel northPanel = new JPanel(new BorderLayout());
+
+		final JPanel timeDatePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 		// Time label (left)
 		timeLabel = new JLabel();
-		timeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+		timeLabel.setFont(new Font("Arial", Font.BOLD, 50));
 		timeDatePanel.add(timeLabel, BorderLayout.WEST);
+
+		timeDatePanel.add(new JLabelBuilder(" | ").font(new Font("Arial", Font.BOLD, 50)).build());
 
 		// Date label (right)
 		dateLabel = new JLabel();
-		dateLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
+		dateLabel.setFont(new Font("Arial", Font.PLAIN, 50));
 		timeDatePanel.add(dateLabel, BorderLayout.EAST);
 
-		add(timeDatePanel, BorderLayout.NORTH);
+		northPanel.add(timeDatePanel, BorderLayout.NORTH);
 
 		// Events display (center, top-left)
-		eventList = new JList<>(new DefaultListModel<>());
-		eventList.setCellRenderer(new TimetableEventListCellRenderer());
-		eventList.setFixedCellHeight(-1);
-		add(eventList, BorderLayout.CENTER);
+		currentEventList = new JPanel();
+		currentEventList.setLayout(new BoxLayout(currentEventList, BoxLayout.X_AXIS));
+		northPanel.add(currentEventList, BorderLayout.CENTER);
+
+		add(northPanel, BorderLayout.NORTH);
+
+		// Upcoming events display (center, bottom-left)
+		upcomingEventList = new JPanel();
+		upcomingEventList.setLayout(new GridLayout(0, 4));
+		add(upcomingEventList, BorderLayout.CENTER);
 
 		// Update every second
 		timer = new Timer(1000, e -> updateUIContents());
@@ -69,43 +77,33 @@ public class TimetableFrame extends JFrame {
 		timeLabel.setText(now.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 		dateLabel.setText(now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
-		List<TimetableEvent> activeEvents = events.stream().filter(ev -> !ev.getStartTime().isAfter(now) && !ev.getEndTime().isBefore(now)).sorted(Comparator.comparing(TimetableEvent::getStartTime)).limit(3).collect(Collectors.toList());
+		events.removeIf(e -> e.isPast());
 
-		int activeCount = activeEvents.size();
+		currentEventList.removeAll();
+		events.stream().filter(e -> e.isOngoing() || e.isUpcoming()).sorted((e1, e2) -> e1.getStartTime().compareTo(e2.getStartTime())).forEach(e -> currentEventList.add(e.getCellComponent()));
+		currentEventList.revalidate();
+		currentEventList.repaint();
 
-		// Fill with upcoming events if less than 3 active
-		List<TimetableEvent> eventsToShow = new ArrayList<>(activeEvents);
-
-		if (activeCount < 3) {
-			List<TimetableEvent> upcomingEvents = events.stream().filter(ev -> ev.getStartTime().isAfter(now)).sorted(Comparator.comparing(TimetableEvent::getStartTime)).collect(Collectors.toList());
-
-			int slotsLeft = 3 - activeCount;
-			for (TimetableEvent ev : upcomingEvents) {
-				eventsToShow.add(ev);
-				if (--slotsLeft == 0)
-					break;
-			}
-		}
-
-		// Update list model
-		DefaultListModel<TimetableEvent> eventListModel = (DefaultListModel<TimetableEvent>) eventList.getModel();
-		eventListModel.clear();
-		for (TimetableEvent ev : eventsToShow) {
-			eventListModel.addElement(ev);
-		}
+		upcomingEventList.removeAll();
+		events.stream().filter(e -> !(e.isOngoing() || e.isUpcoming())).sorted((e1, e2) -> e1.getStartTime().compareTo(e2.getStartTime())).forEach(e -> upcomingEventList.add(e.getCellComponent()));
+		upcomingEventList.revalidate();
+		upcomingEventList.repaint();
 	}
 
 	public static void main(String[] args) {
 		// Example usage with dummy events
 		List<TimetableEvent> dummyEvents = Arrays.asList(
 				new TimetableEvent("Math", "Room 101", "Main Entrance", "Library", LocalDateTime.now().minusMinutes(10), LocalDateTime.now().plusMinutes(20), List.of(TimetableEvent.Category.STUDENTS)),
-
 				new TimetableEvent("Physics", "Lab 2", "Side Gate", "Cafeteria", LocalDateTime.now().plusMinutes(20), LocalDateTime.now().plusMinutes(50), List.of(TimetableEvent.Category.STUDENTS, TimetableEvent.Category.TEACHERS)),
-
 				new TimetableEvent("Chemistry", "Room 202", "Main Entrance", "Gym", LocalDateTime.now().plusMinutes(40), LocalDateTime.now().plusMinutes(70), List.of(TimetableEvent.Category.STUDENTS)),
-
 				new TimetableEvent("Biology", "Room 303", "Back Door", "Auditorium", LocalDateTime.now().plusMinutes(5), LocalDateTime.now().plusMinutes(35), List.of(TimetableEvent.Category.TEACHERS)),
-
+				new TimetableEvent("Biology 1", "Room 303", "Back Door", "Auditorium", LocalDateTime.now().plusMinutes(35), LocalDateTime.now().plusMinutes(35), List.of(TimetableEvent.Category.TEACHERS)),
+				new TimetableEvent("Biology 2 ", "Room 303", "Back Door", "Auditorium", LocalDateTime.now().plusMinutes(40), LocalDateTime.now().plusMinutes(35), List.of(TimetableEvent.Category.TEACHERS)),
+				new TimetableEvent("Biology 3", "Room 303", "Back Door", "Auditorium", LocalDateTime.now().plusMinutes(37), LocalDateTime.now().plusMinutes(35), List.of(TimetableEvent.Category.TEACHERS)),
+				new TimetableEvent("History", "Room 404", "Main Entrance", "Library", LocalDateTime.now().plusMinutes(60), LocalDateTime.now().plusMinutes(90), List.of(TimetableEvent.Category.STUDENTS)),
+				new TimetableEvent("Biology 1", "Room 303", "Back Door", "Auditorium", LocalDateTime.now().plusMinutes(35), LocalDateTime.now().plusMinutes(35), List.of(TimetableEvent.Category.TEACHERS)),
+				new TimetableEvent("Biology 2 ", "Room 303", "Back Door", "Auditorium", LocalDateTime.now().plusMinutes(40), LocalDateTime.now().plusMinutes(35), List.of(TimetableEvent.Category.TEACHERS)),
+				new TimetableEvent("Biology 3", "Room 303", "Back Door", "Auditorium", LocalDateTime.now().plusMinutes(37), LocalDateTime.now().plusMinutes(35), List.of(TimetableEvent.Category.TEACHERS)),
 				new TimetableEvent("History", "Room 404", "Main Entrance", "Library", LocalDateTime.now().plusMinutes(60), LocalDateTime.now().plusMinutes(90), List.of(TimetableEvent.Category.STUDENTS)));
 		// populate dummyEvents with test data
 		SwingUtilities.invokeLater(() -> new TimetableFrame(dummyEvents));
