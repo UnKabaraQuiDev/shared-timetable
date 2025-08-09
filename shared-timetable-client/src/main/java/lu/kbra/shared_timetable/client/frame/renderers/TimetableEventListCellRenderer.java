@@ -29,9 +29,9 @@ public class TimetableEventListCellRenderer implements ListCellRenderer<Timetabl
 		JComponent comp;
 
 		if (!now.isBefore(value.getStartTime()) && !now.isAfter(value.getEndTime())) { // currently ongoing
-			comp = value.getFullView();
+			comp = value.getOngoingView();
 		} else if (minsToStart <= 30) { // starting soon (within 30 minutes)
-			comp = value.getInfoView();
+			comp = value.getUpcomingView();
 		} else {
 			comp = value.getCompactView();
 		}
