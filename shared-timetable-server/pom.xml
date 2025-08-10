@@ -4,12 +4,130 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>lu.kbra</groupId>
-		<artifactId>shared-timetable</artifactId>
-		<version>0.1</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.4</version>
 	</parent>
 
+	<groupId>lu.kbra</groupId>
 	<artifactId>shared-timetable-server</artifactId>
+	<name>Shared Timetable Server</name>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>lu.kbra</groupId>
+				<artifactId>shared-timetable</artifactId>
+				<version>0.1</version>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>lu.pcy113</groupId>
+			<artifactId>PCLib</artifactId>
+			<version>0.9.6</version>
+		</dependency>
+		<dependency>
+			<groupId>lu.rescue_rush</groupId>
+			<artifactId>spring-ws-ext</artifactId>
+			<version>0.1</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<parameters>true</parameters>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>4.9.10</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<configuration>
+							<dateFormat>${maven.build.timestamp.format}</dateFormat>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<includes>
+										<include>application.properties</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+								<resource>
+									<directory>src/main/resources</directory>
+									<includes>
+										<include>**/*</include>
+									</includes>
+								</resource>
+							</resources>
+							<outputDirectory>target/classes</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

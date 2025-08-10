@@ -9,13 +9,13 @@ public class ClientMain {
 
 	private WSClient wsClient;
 	private TimetableFrame timetableFrame;
-	
+
 	private ClientMain() {
-		
-	}
-	
-	public static void main(String[] args) {
 		timetableFrame = new TimetableFrame(new ArrayList<>());
+	}
+
+	public static void main(String[] args) {
+		new ClientMain();
 	}
 
 }

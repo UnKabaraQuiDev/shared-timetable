@@ -33,6 +33,11 @@
 				<artifactId>Java-WebSocket</artifactId>
 				<version>1.6.0</version>
 			</dependency>
+			<dependency>
+				<groupId>lu.rescue_rush</groupId>
+				<artifactId>spring-ws-ext</artifactId>
+				<version>0.1</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
