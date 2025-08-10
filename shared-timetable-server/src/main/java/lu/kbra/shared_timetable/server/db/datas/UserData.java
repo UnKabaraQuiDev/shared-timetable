@@ -13,6 +13,7 @@ import lu.kbra.shared_timetable.server.db.typ.ListType;
 import lu.kbra.shared_timetable.server.utils.SpringUtils;
 import lu.pcy113.pclib.db.autobuild.column.AutoIncrement;
 import lu.pcy113.pclib.db.autobuild.column.Column;
+import lu.pcy113.pclib.db.autobuild.column.Nullable;
 import lu.pcy113.pclib.db.autobuild.column.PrimaryKey;
 import lu.pcy113.pclib.db.autobuild.column.Unique;
 import lu.pcy113.pclib.db.impl.DataBaseEntry;
@@ -31,6 +32,11 @@ public class UserData implements UserDetails, UserID, DataBaseEntry {
 
 	@Column(length = 64)
 	private String password;
+
+	@Column(length = 64)
+	@Nullable
+	@Unique(1)
+	private String token;
 
 	@Column(type = ListType.class)
 	private List<Permission> permissions = new ArrayList<>();
@@ -74,8 +80,30 @@ public class UserData implements UserDetails, UserID, DataBaseEntry {
 		return username;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public List<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void regenToken() {
+		setToken(UserData.hash(username + password + System.currentTimeMillis()));
+	}
+
 	public static String hash(String pw) {
 		return SpringUtils.hash(pw);
+	}
+
+	@Override
+	public String toString() {
+		return "UserData [id=" + id + ", username=" + username + ", password=" + password + ", token=" + token + ", permissions="
+				+ permissions + "]";
 	}
 
 }

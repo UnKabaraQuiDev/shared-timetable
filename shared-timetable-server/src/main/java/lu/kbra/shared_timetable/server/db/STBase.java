@@ -2,6 +2,7 @@ package lu.kbra.shared_timetable.server.db;
 
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
 import lu.pcy113.pclib.db.DataBase;
 import lu.pcy113.pclib.db.DataBaseConnector;
 import lu.pcy113.pclib.db.annotations.base.DB_Base;
@@ -12,6 +13,11 @@ public class STBase extends DataBase {
 
 	public STBase(DataBaseConnector connector) {
 		super(connector);
+	}
+	
+	@PostConstruct
+	public void init() {
+		super.create().run();
 	}
 
 }
