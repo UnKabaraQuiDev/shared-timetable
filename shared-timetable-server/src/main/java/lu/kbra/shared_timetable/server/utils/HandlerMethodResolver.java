@@ -46,7 +46,7 @@ public class HandlerMethodResolver implements ApplicationContextAware {
 
 		for (RequestMappingHandlerMapping mapping : mappings) {
 			try {
-				HandlerExecutionChain handler = mapping.getHandler(request);
+				final HandlerExecutionChain handler = mapping.getHandler(request);
 				if (handler != null && handler.getHandler() instanceof HandlerMethod handlerMethod) {
 					final HTTPHandlerMethod reqHandler = new HTTPHandlerMethod(handlerMethod);
 					request.setAttribute(ATTR_HANDLER, reqHandler);

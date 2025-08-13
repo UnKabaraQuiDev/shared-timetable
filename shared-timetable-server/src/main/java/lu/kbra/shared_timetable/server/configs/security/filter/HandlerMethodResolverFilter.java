@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lu.kbra.shared_timetable.server.STMain;
 import lu.kbra.shared_timetable.server.utils.HandlerMethodResolver;
 import lu.kbra.shared_timetable.server.utils.HandlerMethodResolver.AbstractRequestHandler;
-import lu.rescue_rush.spring.ws_ext.WSMappingRegistry;
 
 @Component
 public class HandlerMethodResolverFilter extends OncePerRequestFilter {
@@ -23,9 +22,6 @@ public class HandlerMethodResolverFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private HandlerMethodResolver handlerMethodResolver;
-
-	@Autowired
-	private WSMappingRegistry wsMappingRegistry;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -37,7 +33,7 @@ public class HandlerMethodResolverFilter extends OncePerRequestFilter {
 			if (STMain.DEBUG) {
 				LOGGER.warning("Unknown endpoint: " + requestURI);
 			}
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unknown endpoint: '" + requestURI + "'.");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unknown endpoint: '" + requestURI + "'.");
 			return;
 		}
 

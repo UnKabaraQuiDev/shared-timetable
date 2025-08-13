@@ -1,39 +1,41 @@
 package lu.kbra.shared_timetable.server.endpoints;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lu.kbra.shared_timetable.server.db.datas.UserData;
 import lu.kbra.shared_timetable.server.services.UserService;
+import lu.rescue_rush.spring.ws_ext.annotations.AllowAnonymous;
 
-@RestController("user")
+@CrossOrigin
+@RestController
+@RequestMapping(value = "/user")
 public class UserEndpoint {
 
 	@Autowired
 	private UserService userService;
 
-	@PostMapping(path = "login", consumes = "application/json", produces = "application/json")
+	@AllowAnonymous
+	@PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
 	public UserAuthResponse login(@RequestBody UserAuthRequest auth, HttpServletRequest request) {
 		final UserData ud = userService.authenticate(auth.name(), auth.password());
 
-		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(ud, null, AuthorityUtils.createAuthorityList());
-		SecurityContextHolder.getContext().setAuthentication(token);
+		userService.assignAuth(ud);
 
 		return new UserAuthResponse(ud.getToken());
 	}
-	
-	@PostMapping(path = "register", consumes = "application/json", produces = "application/json")
+
+	@AllowAnonymous
+	@PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
 	public UserAuthResponse register(@RequestBody UserAuthRequest auth, HttpServletRequest request) {
 		final UserData ud = userService.create(auth.name(), auth.password());
 
-		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(ud, null, AuthorityUtils.createAuthorityList());
-		SecurityContextHolder.getContext().setAuthentication(token);
+		userService.assignAuth(ud);
 
 		return new UserAuthResponse(ud.getToken());
 	}

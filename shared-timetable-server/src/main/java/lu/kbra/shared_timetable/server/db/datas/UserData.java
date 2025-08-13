@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lu.kbra.shared_timetable.server.Permission;
-import lu.kbra.shared_timetable.server.db.typ.ListType;
+import lu.kbra.shared_timetable.server.db.type.ListType;
 import lu.kbra.shared_timetable.server.utils.SpringUtils;
 import lu.pcy113.pclib.db.autobuild.column.AutoIncrement;
 import lu.pcy113.pclib.db.autobuild.column.Column;

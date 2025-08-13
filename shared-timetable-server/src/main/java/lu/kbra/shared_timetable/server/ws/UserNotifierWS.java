@@ -8,8 +8,8 @@ import lu.kbra.shared_timetable.server.db.datas.TimetableEventData;
 import lu.kbra.shared_timetable.server.db.datas.UserData;
 import lu.kbra.shared_timetable.server.services.TimetableEventService;
 import lu.rescue_rush.spring.ws_ext.WSExtHandler;
-import lu.rescue_rush.spring.ws_ext.WSMapping;
 import lu.rescue_rush.spring.ws_ext.WebSocketHandlerExt.WebSocketSessionData;
+import lu.rescue_rush.spring.ws_ext.annotations.WSMapping;
 
 @WSMapping(path = "/user-notifier")
 public class UserNotifierWS extends WSExtHandler {

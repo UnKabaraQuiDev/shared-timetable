@@ -4,6 +4,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.WebSocketSession;
@@ -66,7 +69,7 @@ public class UserService {
 			}
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	public Optional<UserData> token(final String token) {
@@ -84,6 +87,12 @@ public class UserService {
 
 	public Optional<UserData> session(WebSocketSession session) {
 		return auth(session.getHandshakeHeaders().get("Authorization").get(0));
+	}
+
+	public void assignAuth(UserData ud) {
+		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(ud, null,
+				AuthorityUtils.createAuthorityList());
+		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 
 }

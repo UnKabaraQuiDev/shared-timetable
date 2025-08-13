@@ -8,7 +8,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Role;
 import org.springframework.stereotype.Component;
 
-import lu.kbra.shared_timetable.server.db.typ.ListType;
+import lu.kbra.shared_timetable.server.db.type.ListType;
 import lu.pcy113.pclib.db.utils.BaseDataBaseEntryUtils;
 
 @Component

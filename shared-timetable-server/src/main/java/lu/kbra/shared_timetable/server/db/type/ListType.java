@@ -1,4 +1,4 @@
-package lu.kbra.shared_timetable.server.db.typ;
+package lu.kbra.shared_timetable.server.db.type;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
