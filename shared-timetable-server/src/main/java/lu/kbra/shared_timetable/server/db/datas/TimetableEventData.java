@@ -45,4 +45,39 @@ public class TimetableEventData implements DataBaseEntry {
 		this.categories = categories;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
+
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public String asMarkdown() {
+		return String
+				.format("__**%s**__ *(%d)*\nLocation: %s\nStart: %s\nEnd: %s\nCategories: %s\n\n", name, id, location, startTime, endTime, categories);
+	}
+
+	@Override
+	public String toString() {
+		return "TimetableEventData [id=" + id + ", name=" + name + ", location=" + location + ", startTime=" + startTime + ", endTime="
+				+ endTime + ", categories=" + categories + "]";
+	}
+
 }
