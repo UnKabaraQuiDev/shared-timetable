@@ -1,0 +1,3 @@
+[submodule "modules/spring-ws-ext"]
+	path = modules/spring-ws-ext
+	url = git@github.com:RescueRush/spring-ws-ext.git

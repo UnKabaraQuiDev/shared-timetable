@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lu.kbra.shared_timetable.server.db.datas.UserData;
 import lu.kbra.shared_timetable.server.services.UserService;
 import lu.rescue_rush.spring.ws_ext.annotations.AllowAnonymous;
@@ -22,20 +22,24 @@ public class UserEndpoint {
 
 	@AllowAnonymous
 	@PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-	public UserAuthResponse login(@RequestBody UserAuthRequest auth, HttpServletRequest request) {
+	public UserAuthResponse login(@RequestBody UserAuthRequest auth, HttpServletResponse response) {
 		final UserData ud = userService.authenticate(auth.name(), auth.password());
 
 		userService.assignAuth(ud);
+		
+		response.addCookie(userService.createAuthCookie(ud));
 
 		return new UserAuthResponse(ud.getToken());
 	}
 
 	@AllowAnonymous
 	@PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
-	public UserAuthResponse register(@RequestBody UserAuthRequest auth, HttpServletRequest request) {
+	public UserAuthResponse register(@RequestBody UserAuthRequest auth, HttpServletResponse response) {
 		final UserData ud = userService.create(auth.name(), auth.password());
 
 		userService.assignAuth(ud);
+
+		response.addCookie(userService.createAuthCookie(ud));
 
 		return new UserAuthResponse(ud.getToken());
 	}

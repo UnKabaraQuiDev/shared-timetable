@@ -95,4 +95,12 @@ public class UserService {
 		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 
+	public Cookie createAuthCookie(UserData ud) {
+		final Cookie cookie = new Cookie("token", ud.getToken());
+		cookie.setHttpOnly(false);
+		cookie.setPath("/");
+		cookie.setMaxAge(60 * 60 * 24 * 30); // 30 days
+		return cookie;
+	}
+
 }

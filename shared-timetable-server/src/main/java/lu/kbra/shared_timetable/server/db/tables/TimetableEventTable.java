@@ -24,5 +24,9 @@ public class TimetableEventTable extends STTable<TimetableEventData> {
 				.orderByAsc("start_time")
 				.list()).run();
 	}
+	
+	public TimetableEventData updateTimetableEvent(TimetableEventData data) {
+		return super.update(data).run();
+	}
 
 }

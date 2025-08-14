@@ -15,6 +15,7 @@ import org.springframework.core.env.Environment;
 
 import jakarta.annotation.PostConstruct;
 import lu.kbra.shared_timetable.server.db.TableProxyService;
+import lu.rescue_rush.spring.jda.DiscordSenderService;
 
 @SpringBootApplication
 public class STMain {
@@ -37,6 +38,10 @@ public class STMain {
 	/** trigger db init */
 	@Autowired
 	private TableProxyService tableProxyService;
+	
+	/** trigger discord sender init */
+	@Autowired
+	private DiscordSenderService discordSenderService;
 
 	private static long START_TIME;
 
@@ -85,7 +90,7 @@ public class STMain {
 			LOGGER.info("Config directory already exists: " + CONFIG_DIR.getAbsolutePath());
 		}
 
-		SpringApplication app = new SpringApplication(STMain.class);
+		final SpringApplication app = new SpringApplication(STMain.class);
 		app.addListeners(new ApplicationPidFileWriter(new File(CONFIG_DIR, "st-server.pid")));
 
 		app.addListeners(new ApplicationListener<ApplicationEnvironmentPreparedEvent>() {
@@ -97,7 +102,6 @@ public class STMain {
 		});
 
 		app.run(args);
-
 	}
 
 }

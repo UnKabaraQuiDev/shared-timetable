@@ -1,4 +1,4 @@
-package lu.kbra.shared_timetable.server.configs;
+package lu.kbra.shared_timetable.server.configs.db;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -10,8 +10,10 @@ import lu.kbra.shared_timetable.server.services.TimetableEventService;
 import lu.rescue_rush.spring.ws_ext.WSExtHandler;
 import lu.rescue_rush.spring.ws_ext.WebSocketHandlerExt.WebSocketSessionData;
 import lu.rescue_rush.spring.ws_ext.annotations.WSMapping;
+import lu.rescue_rush.spring.ws_ext.annotations.WSTimeout;
 
-@WSMapping(path = "/user-notifier")
+@WSTimeout(false)
+@WSMapping(path = "/user/persistent")
 public class UserNotifierWS extends WSExtHandler {
 
 	@Autowired

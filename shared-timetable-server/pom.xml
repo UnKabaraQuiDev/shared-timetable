@@ -20,6 +20,7 @@
 				<artifactId>shared-timetable</artifactId>
 				<version>0.1</version>
 				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -63,12 +64,14 @@
 		<dependency>
 			<groupId>lu.pcy113</groupId>
 			<artifactId>PCLib</artifactId>
-			<version>0.9.6</version>
 		</dependency>
 		<dependency>
 			<groupId>lu.rescue_rush</groupId>
 			<artifactId>spring-ws-ext</artifactId>
-			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>lu.rescue_rush</groupId>
+			<artifactId>spring-jda</artifactId>
 		</dependency>
 	</dependencies>
 

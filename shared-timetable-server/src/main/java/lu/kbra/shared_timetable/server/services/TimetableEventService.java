@@ -16,9 +16,9 @@ public class TimetableEventService {
 
 	@Autowired
 	private TimetableEventTable timetableEventTable;
-	
+
 	public List<TimetableEventData> fetch(UserData user) {
-		SpringUtils.forbidden(!user.getPermissions().contains(Permission.FETCH), "Missing permission: FETCH.");
+		SpringUtils.forbidden(!user.getPermissions().contains(Permission.FETCH), "Missing permission: " + Permission.FETCH);
 		return timetableEventTable.upcoming();
 	}
 

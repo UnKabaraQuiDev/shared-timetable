@@ -1,7 +1,6 @@
 package lu.kbra.shared_timetable.server.db.tables;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,9 +19,8 @@ public class UserTable extends STTable<UserData> {
 		super(dataBase, dbEntryUtils);
 	}
 
-	// @Cacheable("user.token")
+	@Cacheable("user.token")
 	public Optional<UserData> byToken(String token) {
-		Logger.getLogger(UserTable.class.getName()).info("Querying user by token: " + token);
 		return super.query(QueryBuilder.select(this).where("token", "=", token).firstOptional()).run();
 	}
 

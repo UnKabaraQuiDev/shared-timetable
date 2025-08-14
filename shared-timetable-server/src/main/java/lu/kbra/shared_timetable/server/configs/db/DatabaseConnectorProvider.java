@@ -1,4 +1,4 @@
-package lu.kbra.shared_timetable.server.configs;
+package lu.kbra.shared_timetable.server.configs.db;
 
 import java.io.File;
 import java.io.FileNotFoundException;

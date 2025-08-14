@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import lu.pcy113.pclib.builder.SQLBuilder;
@@ -131,12 +130,10 @@ public class QueryBuilder<T extends SQLQueryable<V>, V extends DataBaseEntry> {
 	}
 
 	public TransformingQuery<V, Optional<V>> firstOptional() {
-		Logger.getLogger(QueryBuilder.class.getName()).info("building first optional query for " + table.getQualifiedName());
 		return new TransformingQuery<V, Optional<V>>() {
 
 			@Override
 			public Optional<V> transform(List<V> data) throws SQLException {
-				Logger.getLogger(QueryBuilder.class.getName()).info("got list: " + data);
 				return Optional.ofNullable(SimpleTransformingQuery.<V, V>transform(data, Query.Type.FIRST_NULL));
 			}
 

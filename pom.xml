@@ -26,18 +26,19 @@
 			<dependency>
 				<groupId>lu.pcy113</groupId>
 				<artifactId>PCLib</artifactId>
-				<version>0.9.5</version>
-			</dependency>
-			<dependency>
-				<groupId>org.java-websocket</groupId>
-				<artifactId>Java-WebSocket</artifactId>
-				<version>1.6.0</version>
+				<version>0.9.6</version>
 			</dependency>
 			<dependency>
 				<groupId>lu.rescue_rush</groupId>
 				<artifactId>spring-ws-ext</artifactId>
 				<version>0.1</version>
 			</dependency>
+			<dependency>
+				<groupId>lu.rescue_rush</groupId>
+				<artifactId>spring-jda</artifactId>
+				<version>0.1</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
