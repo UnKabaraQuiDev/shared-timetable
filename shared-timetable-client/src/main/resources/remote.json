@@ -1,0 +1,12 @@
+{
+	"user": {
+		"name": "username",
+		"pass": "password",
+		"token": "",
+		"regenToken": true
+	},
+	"server": {
+		"secure": false,
+		"url": "localhost:8443",
+	}
+}

@@ -10,7 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lu.kbra.shared_timetable.server.STMain;
+import lu.kbra.shared_timetable.server.STServerMain;
 
 @Component
 public class OptionPreflightFilter extends OncePerRequestFilter {
@@ -21,7 +21,7 @@ public class OptionPreflightFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-			if (STMain.DEBUG) {
+			if (STServerMain.DEBUG) {
 				LOGGER.info("Skipping preflight request to: " + request.getRequestURL());
 			}
 			response.setStatus(HttpServletResponse.SC_OK);

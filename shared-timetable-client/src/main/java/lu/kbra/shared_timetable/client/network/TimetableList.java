@@ -3,8 +3,11 @@ package lu.kbra.shared_timetable.client.network;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import lu.kbra.shared_timetable.client.data.TimetableEvent;
 
+@Component
 public class TimetableList {
 
 	private List<TimetableEvent> events = new ArrayList<>();

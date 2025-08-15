@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import lu.kbra.shared_timetable.server.STMain;
+import lu.kbra.shared_timetable.server.STServerMain;
 import lu.kbra.shared_timetable.server.utils.SpringUtils;
 import lu.pcy113.pclib.config.ConfigLoader;
 
@@ -19,14 +19,14 @@ public class DiscordBotConfiguration {
 	public DiscordBotConfig discordBotConfig() throws FileNotFoundException, IOException {
 		final Logger logger = Logger.getLogger(DiscordBotConfiguration.class.getName());
 
-		if (SpringUtils.extractFile("discord_bot.json", STMain.CONFIG_DIR, "discord_bot.json")) {
-			logger.info("Extracted default discord_bot.json to " + STMain.CONFIG_DIR);
+		if (SpringUtils.extractFile("discord_bot.json", STServerMain.CONFIG_DIR, "discord_bot.json")) {
+			logger.info("Extracted default discord_bot.json to " + STServerMain.CONFIG_DIR);
 		} else {
 			logger.info("Config file discord_bot.json already existed found.");
 		}
 
 		final DiscordBotConfig discordBotConfig = ConfigLoader
-				.loadFromJSONFile(new DiscordBotConfig(), new File(STMain.CONFIG_DIR, "discord_bot.json"));
+				.loadFromJSONFile(new DiscordBotConfig(), new File(STServerMain.CONFIG_DIR, "discord_bot.json"));
 
 		return discordBotConfig;
 	}

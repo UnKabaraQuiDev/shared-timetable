@@ -11,7 +11,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lu.kbra.shared_timetable.server.STMain;
+import lu.kbra.shared_timetable.server.STServerMain;
 import lu.kbra.shared_timetable.server.utils.HandlerMethodResolver;
 import lu.kbra.shared_timetable.server.utils.HandlerMethodResolver.AbstractRequestHandler;
 
@@ -30,7 +30,7 @@ public class HandlerMethodResolverFilter extends OncePerRequestFilter {
 		final AbstractRequestHandler<?> handler = handlerMethodResolver.resolve(request);
 
 		if (handler == null) {
-			if (STMain.DEBUG) {
+			if (STServerMain.DEBUG) {
 				LOGGER.warning("Unknown endpoint: " + requestURI);
 			}
 			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unknown endpoint: '" + requestURI + "'.");

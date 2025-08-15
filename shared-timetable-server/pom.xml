@@ -4,26 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.4</version>
+		<groupId>lu.kbra</groupId>
+		<artifactId>shared-timetable</artifactId>
+		<version>0.1</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>lu.kbra</groupId>
 	<artifactId>shared-timetable-server</artifactId>
 	<name>Shared Timetable Server</name>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>lu.kbra</groupId>
-				<artifactId>shared-timetable</artifactId>
-				<version>0.1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -39,6 +27,7 @@
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
+		<!-- TESTS & DEV -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -61,6 +50,7 @@
 			<version>9.0.0</version>
 		</dependency>
 
+		<!-- LOCAL -->
 		<dependency>
 			<groupId>lu.pcy113</groupId>
 			<artifactId>PCLib</artifactId>

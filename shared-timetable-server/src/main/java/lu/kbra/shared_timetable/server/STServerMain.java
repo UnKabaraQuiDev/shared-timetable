@@ -18,13 +18,13 @@ import lu.kbra.shared_timetable.server.db.TableProxyService;
 import lu.rescue_rush.spring.jda.DiscordSenderService;
 
 @SpringBootApplication
-public class STMain {
+public class STServerMain {
 
-	private static final Logger LOGGER = Logger.getLogger(STMain.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(STServerMain.class.getName());
 
 	public static final File CONFIG_DIR = new File(System.getProperty("user.home"), ".config/shared-timetable-server/");
 
-	public static STMain INSTANCE;
+	public static STServerMain INSTANCE;
 
 	public static String[] PROFILES;
 	public static String NAME, VERSION, BUILD, SHARED_VERSION;
@@ -45,7 +45,7 @@ public class STMain {
 
 	private static long START_TIME;
 
-	public STMain() {
+	public STServerMain() {
 		INSTANCE = this;
 	}
 
@@ -90,14 +90,14 @@ public class STMain {
 			LOGGER.info("Config directory already exists: " + CONFIG_DIR.getAbsolutePath());
 		}
 
-		final SpringApplication app = new SpringApplication(STMain.class);
+		final SpringApplication app = new SpringApplication(STServerMain.class);
 		app.addListeners(new ApplicationPidFileWriter(new File(CONFIG_DIR, "st-server.pid")));
 
 		app.addListeners(new ApplicationListener<ApplicationEnvironmentPreparedEvent>() {
 			@Override
 			public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
-				STMain.environment = event.getEnvironment();
-				STMain.extractEnvironmentConsts();
+				STServerMain.environment = event.getEnvironment();
+				STServerMain.extractEnvironmentConsts();
 			}
 		});
 

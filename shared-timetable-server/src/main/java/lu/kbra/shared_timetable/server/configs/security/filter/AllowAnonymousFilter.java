@@ -16,7 +16,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lu.kbra.shared_timetable.server.STMain;
+import lu.kbra.shared_timetable.server.STServerMain;
 import lu.kbra.shared_timetable.server.utils.HandlerMethodResolver;
 import lu.kbra.shared_timetable.server.utils.HandlerMethodResolver.AbstractRequestHandler;
 import lu.kbra.shared_timetable.server.utils.SpringUtils;
@@ -41,7 +41,7 @@ public class AllowAnonymousFilter extends OncePerRequestFilter {
 		final String sessionId = request.getSession(true).getId();
 
 		if (SpringUtils.isContextUser()) { // already auth.
-			if (STMain.DEBUG) {
+			if (STServerMain.DEBUG) {
 				LOGGER.info("User is already auth for: " + request.getRequestURI());
 			}
 
@@ -52,7 +52,7 @@ public class AllowAnonymousFilter extends OncePerRequestFilter {
 		if (handler.hasAnnotation(AllowAnonymous.class)) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-			if (STMain.DEBUG) {
+			if (STServerMain.DEBUG) {
 				LOGGER.info("Anonymous allowed for: " + request.getRequestURI());
 			}
 
@@ -68,7 +68,7 @@ public class AllowAnonymousFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 			return;
 		} else if (SpringUtils.isAnonymous()) { // Reject anonymous access if not allowed
-			if (STMain.DEBUG) {
+			if (STServerMain.DEBUG) {
 				LOGGER.warning("Anonymous not allowed for: " + request.getRequestURI());
 			}
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorized only.");
