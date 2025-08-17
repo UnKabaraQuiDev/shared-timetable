@@ -15,8 +15,8 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lu.rescue_rush.spring.ws_ext.WSExtHandler;
-import lu.rescue_rush.spring.ws_ext.WSMappingRegistry;
+import lu.rescue_rush.spring.ws_ext.server.WSExtServerHandler;
+import lu.rescue_rush.spring.ws_ext.server.WSExtServerMappingRegistry;
 
 @Component
 public class HandlerMethodResolver implements ApplicationContextAware {
@@ -26,7 +26,7 @@ public class HandlerMethodResolver implements ApplicationContextAware {
 	private List<RequestMappingHandlerMapping> mappings;
 
 	@Autowired
-	private WSMappingRegistry wsMappingRegistry;
+	private WSExtServerMappingRegistry wsMappingRegistry;
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -110,9 +110,9 @@ public class HandlerMethodResolver implements ApplicationContextAware {
 
 	}
 
-	public final class WSHandlerBean extends AbstractRequestHandler<WSExtHandler> {
+	public final class WSHandlerBean extends AbstractRequestHandler<WSExtServerHandler> {
 
-		public WSHandlerBean(WSExtHandler obj) {
+		public WSHandlerBean(WSExtServerHandler obj) {
 			super(obj);
 		}
 

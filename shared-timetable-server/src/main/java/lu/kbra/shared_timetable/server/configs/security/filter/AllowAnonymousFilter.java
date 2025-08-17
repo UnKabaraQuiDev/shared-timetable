@@ -21,7 +21,7 @@ import lu.kbra.shared_timetable.server.utils.HandlerMethodResolver;
 import lu.kbra.shared_timetable.server.utils.HandlerMethodResolver.AbstractRequestHandler;
 import lu.kbra.shared_timetable.server.utils.SpringUtils;
 import lu.pcy113.pclib.PCUtils;
-import lu.rescue_rush.spring.ws_ext.annotations.AllowAnonymous;
+import lu.rescue_rush.spring.ws_ext.server.annotations.AllowAnonymous;
 
 @Component
 public class AllowAnonymousFilter extends OncePerRequestFilter {

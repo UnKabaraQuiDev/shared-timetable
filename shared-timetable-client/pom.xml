@@ -67,6 +67,10 @@
 			<groupId>lu.pcy113</groupId>
 			<artifactId>PCLib</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>lu.rescue_rush</groupId>
+			<artifactId>spring-ws-ext-client</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

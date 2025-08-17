@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import lu.kbra.shared_timetable.server.db.datas.TimetableEventData;
 import lu.kbra.shared_timetable.server.db.datas.UserData;
 import lu.kbra.shared_timetable.server.services.TimetableEventService;
-import lu.rescue_rush.spring.ws_ext.WSExtHandler;
-import lu.rescue_rush.spring.ws_ext.WebSocketHandlerExt.WebSocketSessionData;
-import lu.rescue_rush.spring.ws_ext.annotations.WSMapping;
-import lu.rescue_rush.spring.ws_ext.annotations.WSTimeout;
+import lu.rescue_rush.spring.ws_ext.common.annotations.WSMapping;
+import lu.rescue_rush.spring.ws_ext.server.WSExtServerHandler;
+import lu.rescue_rush.spring.ws_ext.server.WebSocketExtServerHandler.WebSocketSessionData;
+import lu.rescue_rush.spring.ws_ext.server.annotations.WSTimeout;
 
 @WSTimeout(false)
 @WSMapping(path = "/user/persistent")
-public class UserNotifierWS extends WSExtHandler {
+public class UserNotifierWS extends WSExtServerHandler {
 
 	@Autowired
 	private TimetableEventService timetableDataService;

@@ -57,7 +57,7 @@
 		</dependency>
 		<dependency>
 			<groupId>lu.rescue_rush</groupId>
-			<artifactId>spring-ws-ext</artifactId>
+			<artifactId>spring-ws-ext-server</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>lu.rescue_rush</groupId>

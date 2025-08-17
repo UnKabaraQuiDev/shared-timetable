@@ -47,6 +47,16 @@
 			</dependency>
 			<dependency>
 				<groupId>lu.rescue_rush</groupId>
+				<artifactId>spring-ws-ext-client</artifactId>
+				<version>0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>lu.rescue_rush</groupId>
+				<artifactId>spring-ws-ext-server</artifactId>
+				<version>0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>lu.rescue_rush</groupId>
 				<artifactId>spring-jda</artifactId>
 				<version>0.1</version>
 			</dependency>

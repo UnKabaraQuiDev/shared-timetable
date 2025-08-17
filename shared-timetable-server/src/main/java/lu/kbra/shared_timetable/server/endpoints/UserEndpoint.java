@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletResponse;
 import lu.kbra.shared_timetable.server.db.datas.UserData;
 import lu.kbra.shared_timetable.server.services.UserService;
-import lu.rescue_rush.spring.ws_ext.annotations.AllowAnonymous;
+import lu.rescue_rush.spring.ws_ext.server.annotations.AllowAnonymous;
 
 @CrossOrigin
 @RestController

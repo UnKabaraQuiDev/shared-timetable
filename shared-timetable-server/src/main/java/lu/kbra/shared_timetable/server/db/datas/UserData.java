@@ -17,7 +17,7 @@ import lu.pcy113.pclib.db.autobuild.column.Nullable;
 import lu.pcy113.pclib.db.autobuild.column.PrimaryKey;
 import lu.pcy113.pclib.db.autobuild.column.Unique;
 import lu.pcy113.pclib.db.impl.DataBaseEntry;
-import lu.rescue_rush.spring.ws_ext.UserID;
+import lu.rescue_rush.spring.ws_ext.server.UserID;
 
 public class UserData implements UserDetails, UserID, DataBaseEntry {
 
