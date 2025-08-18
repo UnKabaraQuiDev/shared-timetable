@@ -9,15 +9,19 @@ import java.util.regex.Pattern;
 public class DurationUtils {
 
 	public static String formatDuration(LocalDateTime time) {
-		final Duration remainingTime = Duration.between(LocalDateTime.now(), time);
-		final long remainingTotalSeconds = remainingTime.getSeconds();
-		final long remainingMinutes = Math.abs(remainingTotalSeconds) / 60;
-		final long remainingSeconds = Math.abs(remainingTotalSeconds) % 60;
+		Duration remainingTime = Duration.between(LocalDateTime.now(), time);
+		long totalSeconds = remainingTime.getSeconds();
+		long absSeconds = Math.abs(totalSeconds);
 
-		final String prefix = remainingTotalSeconds >= 0 ? "T-" : "T+";
-		final String formatted = String.format("%s %02d:%02d", prefix, remainingMinutes, remainingSeconds);
+		long hours = absSeconds / 3600;
+		long minutes = (absSeconds % 3600) / 60;
+		long seconds = absSeconds % 60;
 
-		return formatted;
+		String prefix = totalSeconds >= 0 ? "T-" : "T+";
+		if (hours > 0)
+			return String.format("%s %02d:%02d:%02d", prefix, hours, minutes, seconds);
+		else
+			return String.format("%s %02d:%02d", prefix, minutes, seconds);
 	}
 
 	private static final Pattern TOKEN = Pattern.compile("(-?\\d+)([smhd])");

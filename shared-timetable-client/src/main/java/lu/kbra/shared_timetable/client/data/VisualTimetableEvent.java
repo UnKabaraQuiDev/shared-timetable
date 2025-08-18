@@ -1,4 +1,4 @@
-package lu.kbra.shared_timetable.client;
+package lu.kbra.shared_timetable.client.data;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

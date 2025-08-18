@@ -15,6 +15,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
 import jakarta.annotation.PostConstruct;
+import lu.kbra.shared_timetable.client.frame.AbstractTimetableFrame;
 
 @SpringBootApplication
 public class STClientMain {
@@ -34,7 +35,8 @@ public class STClientMain {
 	@Autowired
 	private ConfigurableApplicationContext context;
 
-	private static long START_TIME;
+	@Autowired
+	private AbstractTimetableFrame abstractTimetableFrame;
 
 	public STClientMain() {
 		INSTANCE = this;
@@ -70,7 +72,7 @@ public class STClientMain {
 			extractEnvironmentConsts();
 		}
 
-		START_TIME = System.currentTimeMillis();
+		abstractTimetableFrame.setActive();
 	}
 
 	public static void main(String[] args) {
@@ -88,14 +90,14 @@ public class STClientMain {
 			@Override
 			public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
 				STClientMain.environment = event.getEnvironment();
-				STClientMain.extractEnvironmentConsts(); 
+				STClientMain.extractEnvironmentConsts();
 			}
 		});
 
 		app.setHeadless(false);
 		app.setWebApplicationType(WebApplicationType.NONE);
 		app.setKeepAlive(true);
-		
+
 		app.run(args);
 	}
 

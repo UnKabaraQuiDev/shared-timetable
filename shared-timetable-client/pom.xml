@@ -11,6 +11,7 @@
 	</parent>
 
 	<artifactId>shared-timetable-client</artifactId>
+	
 	<name>Shared Timetable Client</name>
 
 	<dependencies>

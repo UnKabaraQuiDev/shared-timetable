@@ -24,15 +24,16 @@ import javax.swing.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.annotation.PostConstruct;
-import lu.kbra.shared_timetable.client.VisualTimetableEvent;
+import lu.kbra.shared_timetable.client.config.TimetableFrameConfig;
+import lu.kbra.shared_timetable.client.data.VisualTimetableEvent;
 import lu.kbra.shared_timetable.client.frame.components.RoundedProgressPanel;
 import lu.kbra.shared_timetable.client.network.TimetableList;
 import lu.kbra.shared_timetable.common.Formats;
 import lu.pcy113.pclib.PCUtils;
 import lu.pcy113.pclib.swing.JLabelBuilder;
 
-@org.springframework.stereotype.Component
-public class TimetableFrame extends JFrame {
+@org.springframework.stereotype.Component("classic")
+public class ClassicTimetableFrame extends JFrame implements AbstractTimetableFrame {
 
 	private static final int UPCOMING_EVENT_COLUMNS = 5;
 	private static final int DATE_FONT_STYLE = 100;
@@ -44,7 +45,7 @@ public class TimetableFrame extends JFrame {
 	@Autowired
 	private TimetableList timetableList;
 
-	public TimetableFrame() {
+	public ClassicTimetableFrame() {
 		setTitle("Timetable Display");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
@@ -86,12 +87,12 @@ public class TimetableFrame extends JFrame {
 		add(upcomingEventColumns, BorderLayout.CENTER);
 	}
 
-	public TimetableFrame(TimetableList timetableList) {
-		this();
+	public ClassicTimetableFrame(TimetableList timetableList) {
+		this(); // leave this here !!
 		this.timetableList = timetableList;
 	}
 
-	public TimetableFrame(List<VisualTimetableEvent> list) {
+	public ClassicTimetableFrame(List<VisualTimetableEvent> list) {
 		this(new TimetableList(list));
 	}
 
@@ -100,7 +101,10 @@ public class TimetableFrame extends JFrame {
 		// Update every second
 		timer = new Timer(1000, e -> updateUIContents());
 		timer.start();
+	}
 
+	@Override
+	public void setActive() {
 		setSize(600, 400);
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -179,6 +183,13 @@ public class TimetableFrame extends JFrame {
 		upcomingEventColumns.repaint();
 	}
 
+	@Override
+	public void validateConfig(TimetableFrameConfig timetableFrameConfig) {
+		timetableFrameConfig.setBackground(super.getBackground());
+		timetableFrameConfig.setAccent(Color.YELLOW);
+		timetableFrameConfig.setMain(Color.CYAN);
+	}
+
 	public static void main(String[] args) {
 		// Example usage with dummy timetableList
 		List<VisualTimetableEvent> dummyTimetableList = Arrays
@@ -190,7 +201,9 @@ public class TimetableFrame extends JFrame {
 								LocalDateTime.now().plusMinutes(20), List.of(VisualTimetableEvent.TimetableEventCategory.STUDENTS)),
 						new VisualTimetableEvent("Physics", "Lab 2", LocalDateTime.now().plusMinutes(20),
 								LocalDateTime.now().plusMinutes(50),
-								List.of(VisualTimetableEvent.TimetableEventCategory.STUDENTS, VisualTimetableEvent.TimetableEventCategory.TEACHERS)),
+								List
+										.of(VisualTimetableEvent.TimetableEventCategory.STUDENTS,
+												VisualTimetableEvent.TimetableEventCategory.TEACHERS)),
 						new VisualTimetableEvent("Chemistry", "Room 202", LocalDateTime.now().plusMinutes(40),
 								LocalDateTime.now().plusMinutes(70), List.of(VisualTimetableEvent.TimetableEventCategory.STUDENTS)),
 						new VisualTimetableEvent("Biology", "Room 303", LocalDateTime.now().plusSeconds(30),
@@ -223,6 +236,7 @@ public class TimetableFrame extends JFrame {
 						new VisualTimetableEvent("History", "Room 404", LocalDateTime.now().plusMinutes(60),
 								LocalDateTime.now().plusMinutes(90), List.of(VisualTimetableEvent.TimetableEventCategory.STUDENTS)));
 		// populate dummytimetableList with test data
-		SwingUtilities.invokeLater(() -> new TimetableFrame(dummyTimetableList));
+		SwingUtilities.invokeLater(() -> new ClassicTimetableFrame(dummyTimetableList));
 	}
+
 }

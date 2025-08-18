@@ -12,15 +12,32 @@
 	<groupId>lu.kbra</groupId>
 	<artifactId>shared-timetable</artifactId>
 	<version>0.1</version>
-
 	<packaging>pom</packaging>
+
 	<name>Shared Timetable</name>
+	<description>A synchronized client-server to display ongoing &amp; upcoming events on a/multiple display(s).</description>
+	<url>https://github.com/UnKabaraQuiDev/shared-timetables/</url>
 
 	<modules>
 		<module>shared-timetable-common</module>
 		<module>shared-timetable-client</module>
 		<module>shared-timetable-server</module>
 	</modules>
+
+	<contributors>
+		<contributor>
+			<name>UnKabaraQuiDev</name>
+			<url>https://github.com/UnKabaraQuiDev/</url>
+		</contributor>
+	</contributors>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License, Version 3</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<properties>
 		<shared-timetables.version>${project.version}</shared-timetables.version>
@@ -42,7 +59,7 @@
 				<artifactId>PCLib</artifactId>
 				<version>0.9.6</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>lu.rescue_rush</groupId>
 				<artifactId>spring-ws-ext</artifactId>
@@ -58,13 +75,13 @@
 				<artifactId>spring-ws-ext-server</artifactId>
 				<version>${spring-ws-ext.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>lu.rescue_rush</groupId>
 				<artifactId>spring-jda</artifactId>
 				<version>0.1</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>lu.kbra</groupId>
 				<artifactId>shared-timetable-common</artifactId>

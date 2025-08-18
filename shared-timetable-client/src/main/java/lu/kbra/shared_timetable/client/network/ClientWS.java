@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 
-import lu.kbra.shared_timetable.client.VisualTimetableEvent;
+import lu.kbra.shared_timetable.client.data.VisualTimetableEvent;
 import lu.kbra.shared_timetable.common.Endpoints;
 import lu.rescue_rush.spring.ws_ext.client.WSExtClientHandler;
 import lu.rescue_rush.spring.ws_ext.client.WebSocketExtClientHandler.WebSocketSessionData;
@@ -38,20 +38,19 @@ public class ClientWS extends WSExtClientHandler {
 	public void fetch(WebSocketSessionData sessionData, List<VisualTimetableEvent> events) {
 		timetableList.clear();
 		timetableList.addAll(events);
-		System.out.println(events + " " + events.getClass().getName() + " and " + events.get(0).getClass().getName());
 	}
 
 	@WSMapping(path = Endpoints.WS_NEW_EVENT)
 	public void newEvent(WebSocketSessionData sessionData, VisualTimetableEvent event) {
 		timetableList.add(event);
-		System.out.println(event);
+		System.out.println("new: " + event);
 	}
-	
+
 	@WSMapping(path = Endpoints.WS_EDIT_EVENT)
 	public void editEvent(WebSocketSessionData sessionData, VisualTimetableEvent event) {
 		timetableList.removeIf(e -> e.getId() == event.getId());
 		timetableList.add(event);
-		System.out.println(event);
+		System.out.println("edit: " + event);
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
-import lu.kbra.shared_timetable.client.VisualTimetableEvent;
+import lu.kbra.shared_timetable.client.data.VisualTimetableEvent;
 
 @Component
 public class TimetableList {
