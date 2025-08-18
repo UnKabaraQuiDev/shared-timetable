@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -20,6 +19,7 @@ import lu.kbra.shared_timetable.common.TimetableEventData.TimetableEventCategory
 import lu.kbra.shared_timetable.server.db.tables.TimetableEventTable;
 import lu.kbra.shared_timetable.server.services.UserNotifierService;
 import lu.pcy113.pclib.PCUtils;
+import lu.pcy113.pclib.async.NextTask;
 import lu.rescue_rush.spring.jda.command.slash.SlashCommandAutocomplete;
 import lu.rescue_rush.spring.jda.command.slash.SlashCommandExecutor;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -62,14 +62,12 @@ public class EditCommand implements SlashCommandExecutor, SlashCommandAutocomple
 
 		event.deferReply().queue();
 
-		final Optional<TimetableEventData> dataOp = timetableEventTable.byId(id);
+		final TimetableEventData data = timetableEventTable.byId(id);
 
-		if (dataOp.isEmpty()) {
+		if (data == null) {
 			event.getHook().sendMessage("No event with id: `" + id + "`").setEphemeral(true).queue();
 			return;
 		}
-
-		final TimetableEventData data = dataOp.get();
 
 		final String oldValue = switch (field) {
 		case "name" -> data.getName();
@@ -157,15 +155,18 @@ public class EditCommand implements SlashCommandExecutor, SlashCommandAutocomple
 		event
 				.getHook()
 				.sendMessage(changedMsg + "Saving...")
-				.queue(e -> timetableEventTable
-						.update(data)
+				.queue(e -> NextTask
+						.withArg(timetableEventTable::updateTimetableEvent)
 						.catch_(ex -> e
-								.editMessage(changedMsg + "Failed: " + ex.getMessage() + " (" + e.getClass().getSimpleName() + ")")
+								.editMessage(changedMsg + "Failed saving: " + ex.getMessage() + " (" + e.getClass().getSimpleName() + ")")
 								.queue())
 						.thenParallel(s -> e.editMessage(changedMsg + "Saved!").queue())
 						.thenParallel(s -> userNotifierService.notifyEventUpdated(s))
+						.catch_(ex -> e
+								.editMessage(changedMsg + "Failed pushing: " + ex.getMessage() + " (" + e.getClass().getSimpleName() + ")")
+								.queue())
 						.thenParallel(s -> e.editMessage(changedMsg + "Saved & pushed!").queue())
-						.run());
+						.run(data));
 	}
 
 	@Override
@@ -178,14 +179,12 @@ public class EditCommand implements SlashCommandExecutor, SlashCommandAutocomple
 		final String currentValue = event
 				.getOption("value", () -> null, o -> o.getAsString().equals("/") || o.getAsString().isBlank() ? null : o.getAsString());
 		final int id = event.getOption("id", () -> null, OptionMapping::getAsInt);
-		final Optional<TimetableEventData> dataOp = timetableEventTable.byId(id);
+		final TimetableEventData data = timetableEventTable.byId(id);
 
-		if (dataOp.isEmpty()) {
+		if (data == null) {
 			event.replyChoice("No event with id: `" + id + "`", "/");
 			return;
 		}
-
-		final TimetableEventData data = dataOp.get();
 
 		if (currentValue == null && field.endsWith("_time_offset")) {
 			event

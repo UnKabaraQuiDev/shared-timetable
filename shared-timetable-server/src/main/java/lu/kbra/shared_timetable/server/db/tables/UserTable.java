@@ -50,12 +50,12 @@ public class UserTable extends STTable<UserData> {
 	}
 
 	@Caching(
-			evict =
-			{
+			evict = {
 					@CacheEvict(value = "user.name-pass", key = "#name + '-' + #password"),
 					@CacheEvict(value = "user.token", key = "#ud.token"),
 					@CacheEvict(value = "user.name", key = "#ud.username"),
-					@CacheEvict(value = "user.id", key = "#ud.id") })
+					@CacheEvict(value = "user.id", key = "#ud.id") }
+	)
 	public UserData updateUserData(UserData ud) {
 		return super.update(ud).run();
 	}

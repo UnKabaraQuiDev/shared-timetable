@@ -14,7 +14,7 @@ public class STBase extends DataBase {
 	public STBase(DataBaseConnector connector) {
 		super(connector);
 	}
-	
+
 	@PostConstruct
 	public void init() {
 		super.create().run();

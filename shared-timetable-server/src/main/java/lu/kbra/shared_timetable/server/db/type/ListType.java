@@ -31,14 +31,12 @@ public class ListType implements FixedColumnType {
 
 			// TODO: @Bananenkaer wtf is this?
 			/*
-			 * List<?> list = (List<?>) value; JSONArray array = new JSONArray();
-			 * ObjectMapper om = new ObjectMapper(); for(Object obj : list) { if(obj
-			 * instanceof Jsonable) { JSONObject s = new JSONObject(((Jsonable)
-			 * obj).asJson(om)); System.out.println(s); array.put(s); } else {
+			 * List<?> list = (List<?>) value; JSONArray array = new JSONArray(); ObjectMapper om = new
+			 * ObjectMapper(); for(Object obj : list) { if(obj instanceof Jsonable) { JSONObject s = new
+			 * JSONObject(((Jsonable) obj).asJson(om)); System.out.println(s); array.put(s); } else {
 			 * System.out.println("hm"); array.put(obj); } }
 			 * 
-			 * String array2 = new JSONArray(list).toString(); System.err.println(array2);
-			 * return array2;
+			 * String array2 = new JSONArray(list).toString(); System.err.println(array2); return array2;
 			 */
 		}
 

@@ -12,7 +12,7 @@ import lu.kbra.shared_timetable.server.STServerMain;
 import lu.kbra.shared_timetable.server.utils.SpringUtils;
 import lu.pcy113.pclib.config.ConfigLoader;
 import lu.pcy113.pclib.db.DataBaseConnector;
-	
+
 @Configuration
 public class DatabaseConnectorProvider {
 
@@ -27,7 +27,8 @@ public class DatabaseConnectorProvider {
 			logger.info("Config file db_connector.json already existed found. Using default values.");
 		}
 
-		DataBaseConnector dbConfig = ConfigLoader.loadFromJSONFile(new DataBaseConnector(), new File(STServerMain.CONFIG_DIR, "db_connector.json"));
+		DataBaseConnector dbConfig = ConfigLoader
+				.loadFromJSONFile(new DataBaseConnector(), new File(STServerMain.CONFIG_DIR, "db_connector.json"));
 
 		return dbConfig;
 	}

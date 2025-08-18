@@ -20,7 +20,7 @@ public class STTable<T extends DataBaseEntry> extends DataBaseTable<T> {
 	public STTable(DataBase dataBase) {
 		super(dataBase);
 	}
-	
+
 	@PostConstruct
 	public void init() {
 		super.create().run();

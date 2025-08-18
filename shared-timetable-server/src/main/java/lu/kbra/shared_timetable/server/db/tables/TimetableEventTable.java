@@ -3,9 +3,12 @@ package lu.kbra.shared_timetable.server.db.tables;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 
 import lu.kbra.shared_timetable.common.TimetableEventData;
@@ -21,6 +24,7 @@ public class TimetableEventTable extends STTable<TimetableEventData> {
 		super(dataBase, dbEntryUtils);
 	}
 
+	@Cacheable("events.upcoming")
 	public List<TimetableEventData> upcoming() {
 		return super.query(QueryBuilder
 				.select(this)
@@ -30,10 +34,18 @@ public class TimetableEventTable extends STTable<TimetableEventData> {
 				.list()).run();
 	}
 
+	@Caching(
+			put = { @CachePut(value = "events.id", key = "#data.id") },
+			evict = { @CacheEvict(value = "events.upcoming", allEntries = true), @CacheEvict(value = "events.names", allEntries = true) }
+	)
 	public TimetableEventData updateTimetableEvent(TimetableEventData data) {
 		return super.update(data).run();
 	}
 
+	@Caching(
+			put = { @CachePut(value = "events.id", key = "#result.id") },
+			evict = { @CacheEvict(value = "events.upcoming", allEntries = true), @CacheEvict(value = "events.names", allEntries = true) }
+	)
 	public TimetableEventData create(
 			String name,
 			String location,
@@ -43,10 +55,12 @@ public class TimetableEventTable extends STTable<TimetableEventData> {
 		return super.insertAndReload(new TimetableEventData(name, location, start, end, categories)).run();
 	}
 
-	public Optional<TimetableEventData> byId(int id) {
-		return super.load(new TimetableEventData(id)).toOptional().run();
+	@Cacheable(value = "events.id", key = "#id", unless = "#result == null")
+	public TimetableEventData byId(int id) {
+		return super.loadIfExists(new TimetableEventData(id)).run();
 	}
 
+	@Cacheable("events.names")
 	public Collection<String> getCandidateNames(String start, int limit) {
 		return super.query(QueryBuilder
 				.select(this)
@@ -54,6 +68,7 @@ public class TimetableEventTable extends STTable<TimetableEventData> {
 				.transform(l -> l.stream().map(TimetableEventData::getName).collect(Collectors.toList()))).run();
 	}
 
+	@Cacheable("events.locations")
 	public Collection<String> getCandidateLocations(String start, int limit) {
 		return super.query(QueryBuilder
 				.select(this)

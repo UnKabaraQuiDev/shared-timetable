@@ -45,7 +45,7 @@ public class CreateEventModal extends DefaultModalInteractionExecutor {
 		}
 
 		final Consumer<String> ephemeral = s -> event.getHook().sendMessage(s).setEphemeral(true).queue();
-		
+
 		final LocalDateTime start = Formats.parseDateTime(startTime, ephemeral);
 		final LocalDateTime end = Formats.parseDateTime(endTime, ephemeral);
 

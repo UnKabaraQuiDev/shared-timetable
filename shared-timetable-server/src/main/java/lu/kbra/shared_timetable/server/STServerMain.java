@@ -38,7 +38,7 @@ public class STServerMain {
 	/** trigger db init */
 	@Autowired
 	private TableProxyService tableProxyService;
-	
+
 	/** trigger discord sender init */
 	@Autowired
 	private DiscordSenderService discordSenderService;

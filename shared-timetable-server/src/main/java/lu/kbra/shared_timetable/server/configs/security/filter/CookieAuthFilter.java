@@ -50,7 +50,7 @@ public class CookieAuthFilter extends OncePerRequestFilter {
 			final Optional<UserData> user = userService.cookies(cookies);
 
 			if (user.isPresent()) { // even if the filter is optional, we still auth the user and attach it to the
-								// session
+				// session
 				SpringUtils.setContextUser(user.get());
 				request.setAttribute("user", user);
 				request.setAttribute("auth", SecurityContextHolder.getContext().getAuthentication());

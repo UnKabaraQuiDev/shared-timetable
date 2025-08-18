@@ -37,7 +37,12 @@ public class TimetableEventService {
 		return createEvent(name, location, start, end, List.of());
 	}
 
-	public TimetableEventData createEvent(String name, String location, LocalDateTime start, LocalDateTime end, List<TimetableEventCategory> categories) {
+	public TimetableEventData createEvent(
+			String name,
+			String location,
+			LocalDateTime start,
+			LocalDateTime end,
+			List<TimetableEventCategory> categories) {
 		final TimetableEventData event = timetableEventTable.create(name, location, start, end, categories);
 
 		userNotifierService.notifyEventCreated(event);

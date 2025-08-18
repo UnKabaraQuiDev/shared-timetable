@@ -7,7 +7,7 @@ public class DiscordBotConfig implements ConfigContainer {
 
 	@ConfigProp("token")
 	public String token;
-	
+
 	public DiscordBotConfig() {
 	}
 
