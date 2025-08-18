@@ -18,6 +18,7 @@ import lu.kbra.shared_timetable.common.Formats;
 import lu.kbra.shared_timetable.common.TimetableEventData;
 import lu.kbra.shared_timetable.common.TimetableEventData.TimetableEventCategory;
 import lu.kbra.shared_timetable.server.db.tables.TimetableEventTable;
+import lu.kbra.shared_timetable.server.services.UserNotifierService;
 import lu.pcy113.pclib.PCUtils;
 import lu.rescue_rush.spring.jda.command.slash.SlashCommandAutocomplete;
 import lu.rescue_rush.spring.jda.command.slash.SlashCommandExecutor;
@@ -33,6 +34,9 @@ public class EditCommand implements SlashCommandExecutor, SlashCommandAutocomple
 
 	@Autowired
 	private TimetableEventTable timetableEventTable;
+
+	@Autowired
+	private UserNotifierService userNotifierService;
 
 	@Override
 	public void execute(SlashCommandInteractionEvent event) {
@@ -158,7 +162,9 @@ public class EditCommand implements SlashCommandExecutor, SlashCommandAutocomple
 						.catch_(ex -> e
 								.editMessage(changedMsg + "Failed: " + ex.getMessage() + " (" + e.getClass().getSimpleName() + ")")
 								.queue())
-						.thenConsume(s -> e.editMessage(changedMsg + "Saved!").queue())
+						.thenParallel(s -> e.editMessage(changedMsg + "Saved!").queue())
+						.thenParallel(s -> userNotifierService.notifyEventUpdated(s))
+						.thenParallel(s -> e.editMessage(changedMsg + "Saved & pushed!").queue())
 						.run());
 	}
 
@@ -233,9 +239,6 @@ public class EditCommand implements SlashCommandExecutor, SlashCommandAutocomple
 		case "time_offset":
 			event.replyChoiceStrings(DurationUtils.autocomplete(currentValue)).queue();
 			break;
-
-		default:
-			return;
 		}
 	}
 

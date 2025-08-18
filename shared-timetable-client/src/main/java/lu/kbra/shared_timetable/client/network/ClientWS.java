@@ -42,7 +42,14 @@ public class ClientWS extends WSExtClientHandler {
 	}
 
 	@WSMapping(path = Endpoints.WS_NEW_EVENT)
-	public void fetch(WebSocketSessionData sessionData, VisualTimetableEvent event) {
+	public void newEvent(WebSocketSessionData sessionData, VisualTimetableEvent event) {
+		timetableList.add(event);
+		System.out.println(event);
+	}
+	
+	@WSMapping(path = Endpoints.WS_EDIT_EVENT)
+	public void editEvent(WebSocketSessionData sessionData, VisualTimetableEvent event) {
+		timetableList.removeIf(e -> e.getId() == event.getId());
 		timetableList.add(event);
 		System.out.println(event);
 	}

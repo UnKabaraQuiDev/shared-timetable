@@ -25,4 +25,12 @@ public class UserNotifierService {
 		LOGGER.info("Notified " + count + " about new event: " + event.toString());
 	}
 
+	public void notifyEventUpdated(TimetableEventData event) {
+		final Object payload = event;
+
+		final int count = userNotifierWS.getWebSocketHandler().broadcast(Endpoints.WS_EDIT_EVENT, payload);
+
+		LOGGER.info("Notified " + count + " about edited event: " + event.toString());
+	}
+
 }
