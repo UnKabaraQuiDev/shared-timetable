@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.time.format.DateTimeFormatter;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.core.io.ClassPathResource;
@@ -22,8 +21,6 @@ import lu.kbra.shared_timetable.server.db.datas.UserData;
 import lu.pcy113.pclib.PCUtils;
 
 public class SpringUtils {
-
-	public static final DateTimeFormatter DATE_TIME_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	public static boolean extractFile(String inJarPath, File configDir, String configFileName) {
 		try {

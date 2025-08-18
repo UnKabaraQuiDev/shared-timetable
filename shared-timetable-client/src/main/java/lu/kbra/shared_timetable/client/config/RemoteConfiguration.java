@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lu.kbra.shared_timetable.client.STClientMain;
 import lu.kbra.shared_timetable.client.network.RemoteConfig;
-import lu.kbra.shared_timetable.client.utils.SpringUtils;
 
 @Configuration
 public class RemoteConfiguration {

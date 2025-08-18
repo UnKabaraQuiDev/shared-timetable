@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import lu.kbra.shared_timetable.server.db.datas.TimetableEventData;
+import lu.kbra.shared_timetable.common.TimetableEventData;
 import lu.kbra.shared_timetable.server.db.datas.UserData;
 import lu.kbra.shared_timetable.server.services.TimetableEventService;
 import lu.rescue_rush.spring.ws_ext.common.annotations.WSMapping;
@@ -18,10 +18,10 @@ public class UserNotifierWS extends WSExtServerHandler {
 
 	@Autowired
 	private TimetableEventService timetableDataService;
-	
+
 	@WSMapping(path = "/fetch")
 	public List<TimetableEventData> fetch(WebSocketSessionData sessionData) {
 		return timetableDataService.fetch((UserData) sessionData.getUser());
 	}
-	
+
 }

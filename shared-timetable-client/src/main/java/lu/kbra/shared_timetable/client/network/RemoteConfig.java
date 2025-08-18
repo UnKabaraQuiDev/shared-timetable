@@ -53,8 +53,8 @@ public class RemoteConfig implements ConfigContainer {
 		this.serverUrl = serverUrl;
 	}
 
-	public URI getWSURI(String endpoint) throws URISyntaxException {
-		return new URI("ws" + (useSecure ? "s" : "") + "://" + serverUrl + endpoint);
+	public URI getWSURI() throws URISyntaxException {
+		return new URI("ws" + (useSecure ? "s" : "") + "://" + serverUrl);
 	}
 
 	public URI getHTTPURI(String endpoint) throws URISyntaxException {

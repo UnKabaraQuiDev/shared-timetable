@@ -4,12 +4,12 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -68,7 +68,7 @@ public class HandlerMethodResolver implements ApplicationContextAware {
 		@SuppressWarnings("unchecked")
 		public AbstractRequestHandler(T bean) {
 			this.bean = bean;
-			this.source = (Class<T>) ClassUtils.getUserClass(bean);
+			this.source = (Class<T>) AopProxyUtils.ultimateTargetClass(bean);
 		}
 
 		public abstract boolean hasAnnotation(Class<? extends Annotation> annotation);

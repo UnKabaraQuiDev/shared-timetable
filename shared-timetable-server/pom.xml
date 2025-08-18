@@ -63,6 +63,10 @@
 			<groupId>lu.rescue_rush</groupId>
 			<artifactId>spring-jda</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>lu.kbra</groupId>
+			<artifactId>shared-timetable-common</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

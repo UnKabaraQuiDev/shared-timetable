@@ -1,4 +1,4 @@
-package lu.kbra.shared_timetable.client.data;
+package lu.kbra.shared_timetable.client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.Box;
@@ -16,53 +15,37 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import lu.kbra.shared_timetable.client.frame.components.RoundedProgressPanel;
-import lu.kbra.shared_timetable.client.utils.DurationUtils;
-import lu.kbra.shared_timetable.client.utils.JLabelBuilder;
+import lu.kbra.shared_timetable.common.DurationUtils;
+import lu.kbra.shared_timetable.common.Formats;
+import lu.kbra.shared_timetable.common.TimetableEventData;
+import lu.pcy113.pclib.swing.JLabelBuilder;
 
-public class TimetableEvent {
+public class VisualTimetableEvent extends TimetableEventData {
 
 	public static final int PADDING = 10;
 	public static final int MARGIN = 5;
 	public static final int UPCOMING_MINUTES = 30;
+	public static final int CORNER_RADIUS = 20;
 
-	public enum Category {
-		STUDENTS, TEACHERS, STAFF
+	public VisualTimetableEvent() {
 	}
 
-	private String name;
-	private String location;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
-	private List<Category> categories;
-
-	private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
-	private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-	public TimetableEvent(String name, String location, String rdvLocation, String endLocation, LocalDateTime startTime, LocalDateTime endTime, List<Category> categories) {
-		this.name = name;
-		this.location = location;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.categories = categories;
-	}
-
-	public LocalDateTime getStartTime() {
-		return startTime;
-	}
-
-	public LocalDateTime getEndTime() {
-		return endTime;
+	public VisualTimetableEvent(String name, String location, LocalDateTime startTime, LocalDateTime endTime, List<TimetableEventCategory> categories) {
+		super(name, location, startTime, endTime, categories);
 	}
 
 	public RoundedProgressPanel getCompactView() {
 		final RoundedProgressPanel panel = new RoundedProgressPanel();
-		
+
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(new JLabelBuilder(startTime.format(TIME_FMT) + " - " + endTime.format(TIME_FMT)).font(new Font("Arial", Font.PLAIN, 20)).build());
+		panel
+				.add(new JLabelBuilder(startTime.format(Formats.TIME_FMT) + " - " + endTime.format(Formats.TIME_FMT))
+						.font(new Font("Arial", Font.PLAIN, 20))
+						.build());
 		panel.add(new JLabelBuilder(name).font(new Font("Arial", Font.BOLD, 20)).build());
 		panel.setBackground(Color.CYAN);
 		panel.setPreferredSize(new Dimension(500, 150));
-		
+
 		return panel;
 	}
 
@@ -77,7 +60,10 @@ public class TimetableEvent {
 		final JPanel topPanel = new JPanel(new BorderLayout());
 		topPanel.setOpaque(false);
 		topPanel.add(new JLabelBuilder(name).font(new Font("Arial", Font.BOLD, 30)).build(), BorderLayout.WEST);
-		topPanel.add(new JLabelBuilder(startTime.format(TIME_FMT) + " - " + endTime.format(TIME_FMT)).font(new Font("Arial", Font.BOLD, 30)).build(), BorderLayout.EAST);
+		topPanel
+				.add(new JLabelBuilder(startTime.format(Formats.TIME_FMT) + " - " + endTime.format(Formats.TIME_FMT))
+						.font(new Font("Arial", Font.BOLD, 30))
+						.build(), BorderLayout.EAST);
 		panel.add(topPanel, BorderLayout.NORTH);
 
 		final JPanel centerPanel = new JPanel();
@@ -95,7 +81,11 @@ public class TimetableEvent {
 
 		panel.add(centerPanel, BorderLayout.CENTER);
 
-		panel.add(new JLabelBuilder(DurationUtils.formatDuration(getStartTime())).font(new Font("Arial", Font.BOLD, 38)).horizontalAlignment(JLabel.CENTER).build(), BorderLayout.SOUTH);
+		panel
+				.add(new JLabelBuilder(DurationUtils.formatDuration(getStartTime()))
+						.font(new Font("Arial", Font.BOLD, 38))
+						.horizontalAlignment(JLabel.CENTER)
+						.build(), BorderLayout.SOUTH);
 
 		return panel;
 	}
@@ -112,8 +102,12 @@ public class TimetableEvent {
 
 		bottomPanel.setOpaque(false);
 
-		bottomPanel.add(new JLabelBuilder(DurationUtils.formatDuration(getStartTime())).font(new Font("Arial", Font.BOLD, 38)).build(), BorderLayout.WEST);
-		bottomPanel.add(new JLabelBuilder(DurationUtils.formatDuration(getEndTime())).font(new Font("Arial", Font.BOLD, 38)).build(), BorderLayout.EAST);
+		bottomPanel
+				.add(new JLabelBuilder(DurationUtils.formatDuration(getStartTime())).font(new Font("Arial", Font.BOLD, 38)).build(),
+						BorderLayout.WEST);
+		bottomPanel
+				.add(new JLabelBuilder(DurationUtils.formatDuration(getEndTime())).font(new Font("Arial", Font.BOLD, 38)).build(),
+						BorderLayout.EAST);
 
 		panel.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -157,18 +151,18 @@ public class TimetableEvent {
 	}
 
 	/**
-	 * should flash if the event transitions to upcoming (10s after) or from upcoming to ongoing (20s before ongoing)
+	 * should flash if the event transitions to upcoming (10s after) or from upcoming to ongoing (20s
+	 * before ongoing)
 	 */
 	public boolean shouldFlash() {
 		final LocalDateTime now = LocalDateTime.now();
-		return (isUpcoming() && Math.abs(Duration.between(now, getUpcomingTime()).toSeconds()) <= 10) || (Math.abs(Duration.between(now, getStartTime()).toSeconds()) <= 20);
+		return (isUpcoming() && Math.abs(Duration.between(now, getUpcomingTime()).toSeconds()) <= 10)
+				|| (Math.abs(Duration.between(now, getStartTime()).toSeconds()) <= 20);
 	}
 
 	public LocalDateTime getUpcomingTime() {
 		return this.getStartTime().minusMinutes(UPCOMING_MINUTES);
 	}
-
-	public static final int CORNER_RADIUS = 20;
 
 	public JPanel getCellComponent() {
 		RoundedProgressPanel comp;
@@ -183,7 +177,7 @@ public class TimetableEvent {
 
 		comp.setBackground(Color.CYAN);
 
-		if (this.categories.contains(Category.STUDENTS)) {
+		if (this.categories.contains(TimetableEventCategory.STUDENTS)) {
 			comp.setBackground(Color.YELLOW);
 		}
 
@@ -197,4 +191,11 @@ public class TimetableEvent {
 
 		return ret;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+
 }

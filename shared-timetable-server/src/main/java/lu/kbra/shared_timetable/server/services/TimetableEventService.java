@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import lu.kbra.shared_timetable.common.TimetableEventData;
+import lu.kbra.shared_timetable.common.TimetableEventData.TimetableEventCategory;
 import lu.kbra.shared_timetable.server.Permission;
-import lu.kbra.shared_timetable.server.db.datas.TimetableEventData;
-import lu.kbra.shared_timetable.server.db.datas.TimetableEventData.Category;
 import lu.kbra.shared_timetable.server.db.datas.UserData;
 import lu.kbra.shared_timetable.server.db.tables.TimetableEventTable;
 import lu.kbra.shared_timetable.server.utils.SpringUtils;
@@ -37,7 +37,7 @@ public class TimetableEventService {
 		return createEvent(name, location, start, end, List.of());
 	}
 
-	public TimetableEventData createEvent(String name, String location, LocalDateTime start, LocalDateTime end, List<Category> categories) {
+	public TimetableEventData createEvent(String name, String location, LocalDateTime start, LocalDateTime end, List<TimetableEventCategory> categories) {
 		final TimetableEventData event = timetableEventTable.create(name, location, start, end, categories);
 
 		userNotifierService.notifyEventCreated(event);

@@ -17,12 +17,14 @@
 	<name>Shared Timetable</name>
 
 	<modules>
+		<module>shared-timetable-common</module>
 		<module>shared-timetable-client</module>
 		<module>shared-timetable-server</module>
 	</modules>
 
 	<properties>
 		<shared-timetables.version>${project.version}</shared-timetables.version>
+		<spring-ws-ext.version>0.1</spring-ws-ext.version>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.source>17</maven.compiler.source>
 	</properties>
@@ -40,25 +42,33 @@
 				<artifactId>PCLib</artifactId>
 				<version>0.9.6</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>lu.rescue_rush</groupId>
 				<artifactId>spring-ws-ext</artifactId>
-				<version>0.1</version>
+				<version>${spring-ws-ext.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>lu.rescue_rush</groupId>
 				<artifactId>spring-ws-ext-client</artifactId>
-				<version>0.1</version>
+				<version>${spring-ws-ext.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>lu.rescue_rush</groupId>
 				<artifactId>spring-ws-ext-server</artifactId>
-				<version>0.1</version>
+				<version>${spring-ws-ext.version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>lu.rescue_rush</groupId>
 				<artifactId>spring-jda</artifactId>
 				<version>0.1</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>lu.kbra</groupId>
+				<artifactId>shared-timetable-common</artifactId>
+				<version>${shared-timetables.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

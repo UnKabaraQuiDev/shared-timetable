@@ -5,7 +5,8 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lu.kbra.shared_timetable.server.db.datas.TimetableEventData;
+import lu.kbra.shared_timetable.common.Endpoints;
+import lu.kbra.shared_timetable.common.TimetableEventData;
 import lu.kbra.shared_timetable.server.ws.UserNotifierWS;
 
 @Service
@@ -19,7 +20,7 @@ public class UserNotifierService {
 	public void notifyEventCreated(TimetableEventData event) {
 		final Object payload = event;
 
-		final int count = userNotifierWS.getWebSocketHandler().broadcast("/new-event", payload);
+		final int count = userNotifierWS.getWebSocketHandler().broadcast(Endpoints.WS_NEW_EVENT, payload);
 
 		LOGGER.info("Notified " + count + " about new event: " + event.toString());
 	}

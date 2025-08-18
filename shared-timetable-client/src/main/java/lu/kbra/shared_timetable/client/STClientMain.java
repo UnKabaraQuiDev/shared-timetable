@@ -82,7 +82,7 @@ public class STClientMain {
 		}
 
 		final SpringApplication app = new SpringApplication(STClientMain.class);
-		app.addListeners(new ApplicationPidFileWriter(new File(CONFIG_DIR, "st-server.pid")));
+		app.addListeners(new ApplicationPidFileWriter(new File(CONFIG_DIR, "st-client.pid")));
 
 		app.addListeners(new ApplicationListener<ApplicationEnvironmentPreparedEvent>() {
 			@Override
