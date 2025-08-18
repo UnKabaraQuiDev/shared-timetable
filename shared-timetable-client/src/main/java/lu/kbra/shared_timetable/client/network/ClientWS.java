@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 
-import lu.kbra.shared_timetable.client.data.VisualTimetableEvent;
 import lu.kbra.shared_timetable.common.Endpoints;
+import lu.kbra.shared_timetable.common.TimetableEventData;
 import lu.rescue_rush.spring.ws_ext.client.WSExtClientHandler;
 import lu.rescue_rush.spring.ws_ext.client.WebSocketExtClientHandler.WebSocketSessionData;
 import lu.rescue_rush.spring.ws_ext.client.annotations.WSPersistentConnection;
@@ -35,19 +35,19 @@ public class ClientWS extends WSExtClientHandler {
 	}
 
 	@WSMapping(path = Endpoints.WS_FETCH)
-	public void fetch(WebSocketSessionData sessionData, List<VisualTimetableEvent> events) {
+	public void fetch(WebSocketSessionData sessionData, List<TimetableEventData> events) {
 		timetableList.clear();
 		timetableList.addAll(events);
 	}
 
 	@WSMapping(path = Endpoints.WS_NEW_EVENT)
-	public void newEvent(WebSocketSessionData sessionData, VisualTimetableEvent event) {
+	public void newEvent(WebSocketSessionData sessionData, TimetableEventData event) {
 		timetableList.add(event);
 		System.out.println("new: " + event);
 	}
 
 	@WSMapping(path = Endpoints.WS_EDIT_EVENT)
-	public void editEvent(WebSocketSessionData sessionData, VisualTimetableEvent event) {
+	public void editEvent(WebSocketSessionData sessionData, TimetableEventData event) {
 		timetableList.removeIf(e -> e.getId() == event.getId());
 		timetableList.add(event);
 		System.out.println("edit: " + event);

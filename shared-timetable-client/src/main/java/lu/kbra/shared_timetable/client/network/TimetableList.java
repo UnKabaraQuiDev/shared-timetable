@@ -10,29 +10,29 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
-import lu.kbra.shared_timetable.client.data.VisualTimetableEvent;
+import lu.kbra.shared_timetable.common.TimetableEventData;
 
 @Component
-public class TimetableList {
+public class TimetableList implements Iterable<TimetableEventData> {
 
-	private List<VisualTimetableEvent> events = new ArrayList<>();
+	private List<TimetableEventData> events = new ArrayList<>();
 
 	public TimetableList() {
 	}
 
-	public TimetableList(List<VisualTimetableEvent> events) {
+	public TimetableList(List<TimetableEventData> events) {
 		this.events = events;
 	}
 
-	public List<VisualTimetableEvent> getEvents() {
+	public List<TimetableEventData> getEvents() {
 		return events;
 	}
 
-	public void setEvents(List<VisualTimetableEvent> events) {
+	public void setEvents(List<TimetableEventData> events) {
 		this.events = events;
 	}
 
-	public void forEach(Consumer<? super VisualTimetableEvent> action) {
+	public void forEach(Consumer<? super TimetableEventData> action) {
 		events.forEach(action);
 	}
 
@@ -40,11 +40,12 @@ public class TimetableList {
 		return events.isEmpty();
 	}
 
-	public Iterator<VisualTimetableEvent> iterator() {
+	@Override
+	public Iterator<TimetableEventData> iterator() {
 		return events.iterator();
 	}
 
-	public boolean add(VisualTimetableEvent e) {
+	public boolean add(TimetableEventData e) {
 		return events.add(e);
 	}
 
@@ -52,7 +53,7 @@ public class TimetableList {
 		return events.remove(o);
 	}
 
-	public boolean addAll(Collection<? extends VisualTimetableEvent> c) {
+	public boolean addAll(Collection<? extends TimetableEventData> c) {
 		return events.addAll(c);
 	}
 
@@ -60,19 +61,19 @@ public class TimetableList {
 		events.clear();
 	}
 
-	public VisualTimetableEvent get(int index) {
+	public TimetableEventData get(int index) {
 		return events.get(index);
 	}
 
-	public VisualTimetableEvent remove(int index) {
+	public TimetableEventData remove(int index) {
 		return events.remove(index);
 	}
 
-	public Stream<VisualTimetableEvent> stream() {
+	public Stream<TimetableEventData> stream() {
 		return events.stream();
 	}
 
-	public boolean removeIf(Predicate<VisualTimetableEvent> filter) {
+	public boolean removeIf(Predicate<TimetableEventData> filter) {
 		return events.removeIf(filter);
 	}
 

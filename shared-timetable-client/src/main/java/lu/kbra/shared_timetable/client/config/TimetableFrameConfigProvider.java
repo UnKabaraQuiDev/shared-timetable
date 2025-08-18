@@ -6,20 +6,42 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lu.kbra.shared_timetable.client.STClientMain;
+import lu.kbra.shared_timetable.client.frame.classic.ClassicTimetableFrame;
 
 @Configuration
-public class TimetableFrameConfiguration {
+public class TimetableFrameConfigProvider {
 
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Autowired
+	private Environment environment;
+
+	@Autowired
+	private ApplicationContext applicationContext;
+
+	@Autowired
+	@Lazy
+	private TimetableFrameConfig timetableFrameConfig;
+
 	private final File file = new File(STClientMain.CONFIG_DIR, "frame.json");
+
+	@Bean("style")
+	public String style() {
+		return environment
+				.getProperty("frame.style",
+						timetableFrameConfig.getStyle() == null ? applicationContext.getBeanNamesForType(ClassicTimetableFrame.class)[0]
+								: timetableFrameConfig.getStyle());
+	}
 
 	@Bean
 	public TimetableFrameConfig timetableFrameConfig() throws FileNotFoundException, IOException {

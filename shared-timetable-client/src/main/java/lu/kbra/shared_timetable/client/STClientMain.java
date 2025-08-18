@@ -71,8 +71,6 @@ public class STClientMain {
 			environment = context.getEnvironment();
 			extractEnvironmentConsts();
 		}
-
-		abstractTimetableFrame.setActive();
 	}
 
 	public static void main(String[] args) {

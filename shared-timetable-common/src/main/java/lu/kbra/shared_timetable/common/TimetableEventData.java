@@ -1,5 +1,6 @@
 package lu.kbra.shared_timetable.common;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import lu.pcy113.pclib.db.autobuild.column.PrimaryKey;
 import lu.pcy113.pclib.db.impl.DataBaseEntry;
 
 public class TimetableEventData implements DataBaseEntry {
+
+	public static final int UPCOMING_MINUTES = 30;
 
 	public static enum TimetableEventCategory {
 		STUDENTS, TEACHERS, STAFF;
@@ -106,6 +109,56 @@ public class TimetableEventData implements DataBaseEntry {
 
 	public void setCategories(List<TimetableEventCategory> categories) {
 		this.categories = categories;
+	}
+
+	public boolean isPast() {
+		return LocalDateTime.now().isAfter(this.getEndTime());
+	}
+
+	public boolean isOngoing() {
+		LocalDateTime now = LocalDateTime.now();
+		return !now.isBefore(this.getStartTime()) && !now.isAfter(this.getEndTime());
+	}
+
+	/**
+	 * if the event starts in < 30 minutes
+	 */
+	public boolean isUpcoming() {
+		return LocalDateTime.now().isAfter(getUpcomingTime()) && !this.isOngoing();
+	}
+
+	public int getTotalDuration() {
+		return (int) Duration.between(this.getStartTime(), this.getEndTime()).toMinutes();
+	}
+
+	public int getElapsedDuration() {
+		return (int) Duration.between(LocalDateTime.now(), this.getEndTime()).toMinutes();
+	}
+
+	public int getRemainingDuration() {
+		return (int) Duration.between(LocalDateTime.now(), this.getStartTime()).toMinutes();
+	}
+
+	public int getUpcomingDuration() {
+		return (int) Duration.between(LocalDateTime.now(), this.getUpcomingTime()).toMinutes();
+	}
+
+	public int getStartDuration() {
+		return (int) Duration.between(LocalDateTime.now(), this.getStartTime()).toMinutes();
+	}
+
+	/**
+	 * should flash if the event transitions to upcoming (10s after) or from upcoming to ongoing (20s
+	 * before ongoing)
+	 */
+	public boolean shouldFlash() {
+		final LocalDateTime now = LocalDateTime.now();
+		return (isUpcoming() && Math.abs(Duration.between(now, getUpcomingTime()).toSeconds()) <= 10)
+				|| (Math.abs(Duration.between(now, getStartTime()).toSeconds()) <= 20);
+	}
+
+	public LocalDateTime getUpcomingTime() {
+		return this.getStartTime().minusMinutes(UPCOMING_MINUTES);
 	}
 
 	public String asMarkdown() {
