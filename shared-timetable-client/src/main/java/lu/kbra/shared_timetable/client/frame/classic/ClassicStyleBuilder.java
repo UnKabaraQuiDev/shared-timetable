@@ -1,7 +1,6 @@
 package lu.kbra.shared_timetable.client.frame.classic;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -92,7 +91,7 @@ public class ClassicStyleBuilder {
 		final RoundedProgressPanel panel = getUpcomingView(data);
 
 		panel.setProgressColor(config.getProgress());
-		panel.setProgress(data.getElapsedDuration() * 100 / data.getTotalDuration());
+		panel.setProgress(data.getElapsedPercentage());
 		panel.setHorizontal();
 
 		final JPanel bottomPanel = new JPanel(new BorderLayout());

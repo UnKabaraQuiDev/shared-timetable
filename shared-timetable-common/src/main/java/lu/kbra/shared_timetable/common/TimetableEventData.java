@@ -126,7 +126,7 @@ public class TimetableEventData implements DataBaseEntry, Comparable<TimetableEv
 	public boolean isUpcoming() {
 		return LocalDateTime.now().isAfter(getUpcomingTime()) && !this.isOngoing();
 	}
-	
+
 	/**
 	 * if the event starts in < 2 hour
 	 */
@@ -139,15 +139,15 @@ public class TimetableEventData implements DataBaseEntry, Comparable<TimetableEv
 	}
 
 	public int getElapsedDuration() {
-		return (int) Duration.between(LocalDateTime.now(), this.getEndTime()).toMinutes();
+		return (int) Duration.between(this.getStartTime(), LocalDateTime.now()).toMinutes();
 	}
-	
+
 	public int getElapsedPercentage() {
-		return (int) (100.0 * getElapsedDuration() / getTotalDuration());
+		return (int) (getElapsedDuration() * 100 / getTotalDuration());
 	}
 
 	public int getRemainingDuration() {
-		return (int) Duration.between(LocalDateTime.now(), this.getStartTime()).toMinutes();
+		return (int) Duration.between(LocalDateTime.now(), this.getEndTime()).toMinutes();
 	}
 
 	public int getUpcomingDuration() {
@@ -171,19 +171,19 @@ public class TimetableEventData implements DataBaseEntry, Comparable<TimetableEv
 	public boolean isSameDay() {
 		return getEndTime().toLocalDate().equals(getStartTime().toLocalDate());
 	}
-	
+
 	public boolean isStartToday() {
 		return getStartTime().toLocalDate().equals(LocalDateTime.now().toLocalDate());
 	}
-	
+
 	public boolean isEndToday() {
 		return getEndTime().toLocalDate().equals(LocalDateTime.now().toLocalDate());
 	}
-	
+
 	public LocalDateTime getUpcomingTime() {
 		return this.getStartTime().minusMinutes(UPCOMING_MINUTES);
 	}
-	
+
 	public LocalDateTime getLongUpcomingTime() {
 		return this.getStartTime().minusMinutes(LONG_UPCOMING_MINUTES);
 	}
