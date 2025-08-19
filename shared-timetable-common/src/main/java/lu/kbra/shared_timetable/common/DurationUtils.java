@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class DurationUtils {
 
-	public static String formatDuration(LocalDateTime time) {
+	public static String formatDurationHHmmss(LocalDateTime time) {
 		Duration remainingTime = Duration.between(LocalDateTime.now(), time);
 		long totalSeconds = remainingTime.getSeconds();
 		long absSeconds = Math.abs(totalSeconds);
@@ -17,11 +17,28 @@ public class DurationUtils {
 		long minutes = (absSeconds % 3600) / 60;
 		long seconds = absSeconds % 60;
 
-		String prefix = totalSeconds >= 0 ? "T-" : "T+";
-		if (hours > 0)
-			return String.format("%s %02d:%02d:%02d", prefix, hours, minutes, seconds);
-		else
-			return String.format("%s %02d:%02d", prefix, minutes, seconds);
+		String prefix = totalSeconds >= 0 ? "-" : "+";
+		// if (hours > 0)
+		return String.format("%s%02d:%02d:%02d", prefix, hours, minutes, seconds);
+		/*
+		 * else return String.format("%s %02d:%02d", prefix, minutes, seconds);
+		 */
+	}
+
+	public static String formatDurationHHmm(LocalDateTime time) {
+		Duration remainingTime = Duration.between(LocalDateTime.now(), time);
+		long totalSeconds = remainingTime.getSeconds();
+		long absSeconds = Math.abs(totalSeconds);
+
+		long hours = absSeconds / 3600;
+		long minutes = (absSeconds % 3600) / 60;
+
+		String prefix = totalSeconds >= 0 ? "-" : "+";
+		// if (hours > 0)
+		return String.format("%s%02d:%02d", prefix, hours, minutes);
+		/*
+		 * else return String.format("%s %02d", prefix, minutes);
+		 */
 	}
 
 	private static final Pattern TOKEN = Pattern.compile("(-?\\d+)([smhd])");

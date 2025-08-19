@@ -79,7 +79,7 @@ public class ClassicStyleBuilder {
 		panel.add(centerPanel, BorderLayout.CENTER);
 
 		panel
-				.add(new JLabelBuilder(DurationUtils.formatDuration(data.getStartTime()))
+				.add(new JLabelBuilder(DurationUtils.formatDurationHHmmss(data.getStartTime()))
 						.font(new Font("Arial", Font.BOLD, 38))
 						.horizontalAlignment(JLabel.CENTER)
 						.build(), BorderLayout.SOUTH);
@@ -100,10 +100,10 @@ public class ClassicStyleBuilder {
 		bottomPanel.setOpaque(false);
 
 		bottomPanel
-				.add(new JLabelBuilder(DurationUtils.formatDuration(data.getStartTime())).font(new Font("Arial", Font.BOLD, 38)).build(),
+				.add(new JLabelBuilder(DurationUtils.formatDurationHHmmss(data.getStartTime())).font(new Font("Arial", Font.BOLD, 38)).build(),
 						BorderLayout.WEST);
 		bottomPanel
-				.add(new JLabelBuilder(DurationUtils.formatDuration(data.getEndTime())).font(new Font("Arial", Font.BOLD, 38)).build(),
+				.add(new JLabelBuilder(DurationUtils.formatDurationHHmmss(data.getEndTime())).font(new Font("Arial", Font.BOLD, 38)).build(),
 						BorderLayout.EAST);
 
 		panel.add(bottomPanel, BorderLayout.SOUTH);

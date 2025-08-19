@@ -10,9 +10,14 @@ import java.util.function.Consumer;
 public final class Formats {
 
 	public static final DateTimeFormatter DATE_TIME_FMT = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+	public static final DateTimeFormatter SHORT_DATE_TIME_FMT = DateTimeFormatter.ofPattern("HH:mm dd/MM");
+	public static final DateTimeFormatter SHORT_DATE_TIME_REVERSED_FMT = DateTimeFormatter.ofPattern("dd/MM HH:mm");
 
 	public static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	public static final DateTimeFormatter SHORT_DATE_FMT = DateTimeFormatter.ofPattern("dd/MM");
+	
 	public static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm:ss");
+	public static final DateTimeFormatter SHORT_TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
 
 	public static LocalDateTime parseDateTime(String time, Consumer<String> event) {
 		try {

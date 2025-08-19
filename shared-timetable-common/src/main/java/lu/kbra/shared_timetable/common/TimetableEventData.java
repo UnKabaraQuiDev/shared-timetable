@@ -9,9 +9,9 @@ import lu.pcy113.pclib.db.autobuild.column.Column;
 import lu.pcy113.pclib.db.autobuild.column.PrimaryKey;
 import lu.pcy113.pclib.db.impl.DataBaseEntry;
 
-public class TimetableEventData implements DataBaseEntry {
+public class TimetableEventData implements DataBaseEntry, Comparable<TimetableEventData> {
 
-	public static final int UPCOMING_MINUTES = 30;
+	public static final int UPCOMING_MINUTES = 30, LONG_UPCOMING_MINUTES = 120;
 
 	public static enum TimetableEventCategory {
 		STUDENTS, TEACHERS, STAFF;
@@ -126,6 +126,13 @@ public class TimetableEventData implements DataBaseEntry {
 	public boolean isUpcoming() {
 		return LocalDateTime.now().isAfter(getUpcomingTime()) && !this.isOngoing();
 	}
+	
+	/**
+	 * if the event starts in < 2 hour
+	 */
+	public boolean isLongUpcoming() {
+		return LocalDateTime.now().isAfter(getLongUpcomingTime()) && !this.isOngoing();
+	}
 
 	public int getTotalDuration() {
 		return (int) Duration.between(this.getStartTime(), this.getEndTime()).toMinutes();
@@ -133,6 +140,10 @@ public class TimetableEventData implements DataBaseEntry {
 
 	public int getElapsedDuration() {
 		return (int) Duration.between(LocalDateTime.now(), this.getEndTime()).toMinutes();
+	}
+	
+	public int getElapsedPercentage() {
+		return (int) (100.0 * getElapsedDuration() / getTotalDuration());
 	}
 
 	public int getRemainingDuration() {
@@ -157,8 +168,24 @@ public class TimetableEventData implements DataBaseEntry {
 				|| (Math.abs(Duration.between(now, getStartTime()).toSeconds()) <= 20);
 	}
 
+	public boolean isSameDay() {
+		return getEndTime().toLocalDate().equals(getStartTime().toLocalDate());
+	}
+	
+	public boolean isStartToday() {
+		return getStartTime().toLocalDate().equals(LocalDateTime.now().toLocalDate());
+	}
+	
+	public boolean isEndToday() {
+		return getEndTime().toLocalDate().equals(LocalDateTime.now().toLocalDate());
+	}
+	
 	public LocalDateTime getUpcomingTime() {
 		return this.getStartTime().minusMinutes(UPCOMING_MINUTES);
+	}
+	
+	public LocalDateTime getLongUpcomingTime() {
+		return this.getStartTime().minusMinutes(LONG_UPCOMING_MINUTES);
 	}
 
 	public String asMarkdown() {
@@ -176,6 +203,11 @@ public class TimetableEventData implements DataBaseEntry {
 	public String toString() {
 		return "TimetableEventData [id=" + id + ", name=" + name + ", location=" + location + ", startTime=" + startTime + ", endTime="
 				+ endTime + ", categories=" + categories + "]";
+	}
+
+	@Override
+	public int compareTo(TimetableEventData o) {
+		return startTime.compareTo(o.startTime);
 	}
 
 }

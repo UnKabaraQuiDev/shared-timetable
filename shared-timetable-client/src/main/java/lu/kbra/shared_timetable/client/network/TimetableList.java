@@ -2,6 +2,7 @@ package lu.kbra.shared_timetable.client.network;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -75,6 +76,10 @@ public class TimetableList implements Iterable<TimetableEventData> {
 
 	public boolean removeIf(Predicate<TimetableEventData> filter) {
 		return events.removeIf(filter);
+	}
+
+	public void sort(Comparator<? super TimetableEventData> c) {
+		events.sort(c);
 	}
 
 }
