@@ -35,6 +35,20 @@ _Probably only compatible with Linux, untested on Windows_
   - `user.regenToken`: Whether the token should be regenerated using the username/password (iff the given token is invalid/empty)
   - `server.secure`: Use https & wss instead of http & ws
   - `user.url`: The server's url/ip (incl. port if needed. Default server port: `8443`, can be owerwritten using the `--server.port` cmd line arg.)
+ 
+- other configs: The different frame styles may create additional configuration for things such as colors, locale, scaling, etc.
+
+## Frame styles
+- [Classic](https://github.com/UnKabaraQuiDev/shared-timetable/tree/main/shared-timetable-client/src/main/java/lu/kbra/shared_timetable/client/frame/classic) (default, very buggy, doesn't handle long texts well)
+- [Train](https://github.com/UnKabaraQuiDev/shared-timetable/tree/main/shared-timetable-client/src/main/java/lu/kbra/shared_timetable/client/frame/train) (ignores [TimetableEventData.TimetableEventCategory](https://github.com/UnKabaraQuiDev/shared-timetable/blob/main/shared-timetable-common/src/main/java/lu/kbra/shared_timetable/common/TimetableEventData.java))
+
+## Adding your own frame styles
+- Frames and their respective configuration (if needed) should be contained in one package
+- The frame class has to be a Spring `@Component` implementing [AbstractTimetableFrame](https://github.com/UnKabaraQuiDev/shared-timetable/blob/main/shared-timetable-client/src/main/java/lu/kbra/shared_timetable/client/frame/AbstractTimetableFrame.java) (or extending [AbstractTimetableJFrame](https://github.com/UnKabaraQuiDev/shared-timetable/blob/main/shared-timetable-client/src/main/java/lu/kbra/shared_timetable/client/frame/AbstractTimetableJFrame.java) if using a JFrame)
+- A `AbstractTimetableFrame` class can only include one [StyleConfig](https://github.com/UnKabaraQuiDev/shared-timetable/blob/main/shared-timetable-client/src/main/java/lu/kbra/shared_timetable/client/config/StyleConfig.java) field to store additional configs
+- Use an `@Autowired` [TimetableList](https://github.com/UnKabaraQuiDev/shared-timetable/blob/main/shared-timetable-client/src/main/java/lu/kbra/shared_timetable/client/network/TimetableList.java) to get the events
+
+**Feel free to create a [Pull Request](https://github.com/UnKabaraQuiDev/shared-timetable/pulls) to implement your style in the main repo**
 
 ## Images
 **Clients:** <br>
